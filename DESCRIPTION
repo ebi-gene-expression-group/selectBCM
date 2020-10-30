@@ -1,0 +1,56 @@
+Package: Batchevaluation
+Type: Package
+Title: Toolkit for batch correction
+Version: 0.1.0
+Author: Madhulika Mishra, XXXX
+Maintainer: The package maintainer <madhulika@ebi.ac.uk>
+Description: Wrapper for batch evaluation and correction in gene-expression datasets
+License: GPL-3
+LazyData: true
+RoxygenNote: 7.1.1
+VignetteBuilder: knitr
+Encoding: UTF-8
+biocViews: 
+Imports: 
+    Biobase,
+    stringr,
+    purrr,
+    ggplot2,
+    igraph,
+    gtools,
+    readr,
+    magrittr,
+    dplyr,
+    batchelor,
+    limma,
+    WGCNA,
+    RUVSeq,
+    RUVnormalize,
+    sva,
+    preprocessCore,
+    lme4,
+    GGally,
+    SummarizedExperiment,
+    RANN,
+    cluster,
+    rowr,
+    statmod,
+    tibble,
+    edgeR
+Remotes: git::https://github.com/tengfei-emory/scBatch.git
+Collate: 
+    'Metadatacreation.R'
+    'helper_ComBat_seq.R'
+    'ComBat_seq.R'
+    'gfs_function.R'
+    'Batch_correction_methods.R'
+    'HVG.R'
+    'PVCA.R'
+    'Rank.plot.R'
+    'accessory.R'
+    'batch_sil.R'
+    'entropy.R'
+    'pcRegression.R'
+    'evaluation_protcol.R'
+    'raw.evaluation.R'
+    'utils-pipe.R'
