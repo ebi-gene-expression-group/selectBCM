@@ -1,8 +1,3 @@
----
-output:
-  html_document: default
-  pdf_document: default
----
 # Batchevaluation wrapper: Short introduction
 Madhulika Mishra
 
@@ -49,7 +44,7 @@ install.packages('Batchevaluation.zip', repos = NULL, type = 'source')
 # Overview of steps available in Batchevaluation
 Batchevaluation package has several steps ranging from meta-experiment creation to batch-effect evaluation step (`Figure1`). In the current wrapper, scripts are written in a user-friendly way. Short description of each step and example is given below -
 
-![Workflow of the Batchevaluation package.](/Users/madhulika/Desktop/Batchevaluation/data/figure1.png)
+![Workflow of the Batchevaluation package.](/data/figure1.png)
 
 ## loading library
 Sometime loading of 'magrittr','purrr' and 'dplyr' with `Batchevaluation` package  is deprecated, therefore, it is recommended to load all of these together.
