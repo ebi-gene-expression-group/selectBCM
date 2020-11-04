@@ -220,7 +220,7 @@ assessment is a nested list of evaluation scores for each of the evaluation prot
 The following table explains how results from each evaluation protocol should be interpreted. PVCA, silhouette index and PcRegression measures residual `batch-effect` in corrected data, therefore for these measurements lower the score, better the performance will be. HVG (HVG.union & HVG.inersection) measures inherent biological heterogeneity, therefore higher the score, better will be method. Entropy measures entropy of batch-mixing, therefore; higher the score better the method is. Lastly, we also compute silhouette index using only gender-specific genes and gender meta-data. This gives us 
 a measure of the impact of batch-correction on gender-difference, which is a well-estabilshed biological phenotype. Ideally, any good batch-correction method should not decrease silhouette index of gender-based clustering after batch-correction.
 
-![Result interpretation.](/figure3.png)
+![Result interpretation.](/data/figure3.png)
 
 ## Diagnostic plot
 Once, assessment is performed, in next step, results obtained from the `batch_evaluation` step can be further analyszed using
@@ -236,7 +236,7 @@ This function has only one argument-
 ``` 
 **final** is a list of two data-frame- (a) raw - simple data-frame output of evaluation matrix and, (b) ranked- Ranked data-frame of evaluation matrix which has additional column `sumRank` containing final Rank of each method. Ranks are in descending performance order, i.e. the method having score 1 will be the best method. This function also outputs a `diagnostic plot`, where x-axis is the evaluation protocol and y-axis is the Rank of each batch-correction method.
 
-![Diagnostic plot.](/Users/madhulika/Desktop/Batchevaluation/data/Figure_4.png)
+![Diagnostic plot.](/data/Figure_4.png)
 
 
 # Workflow for bulk-RNAseq data
