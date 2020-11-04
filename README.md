@@ -23,7 +23,7 @@ These steps may be implemented in a variety of ways including stand-alone tools,
 
 ## Via Github and devtools
 
-If you want to install the package directly from Github, I recommend using the `devtools` package. Package uses r-base=3.6.3, therefore it is advised to initiate conda environment with r-base=3.6.3. Wrapper uses "foreign"  package as dependency which is no more supported by cran, therefore it shoukld be installed via conda before hand. 
+If you want to install the package directly from Github, I recommend using the `devtools` package. Package uses r-base=3.6.3, therefore it is advised to initiate conda environment with r-base=3.6.3. Wrapper uses "foreign"  package as dependency which is no more supported by cran, therefore it should be installed via conda before hand. 
 
 ```
 conda create -p ./venv  -c conda-forge r-base=3.6.3
