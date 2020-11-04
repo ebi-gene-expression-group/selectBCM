@@ -47,7 +47,7 @@ Batchevaluation package has several steps ranging from meta-experiment creation 
 ![Workflow of the Batchevaluation package.](/data/figure1.png)
 
 ## loading library
-Sometime loading of 'magrittr','purrr' and 'dplyr' with `Batchevaluation` package  is deprecated, therefore, it is recommended to load all of these together.
+Sometime loading of 'magrittr','purrr' and 'dplyr' with `Batchevaluation` package  is deprecated, therefore, it is recommended to load all of these together. **Recommendation:** Computation of scBatch requires high memory allocation for RcPP.
 
 ```r
 library(magrittr)
