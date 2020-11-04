@@ -187,7 +187,7 @@ data.Q_naiveRandRUV_empi.controls 1      ExpressionSet S4
 The function `batch_evaluation` performs various evaluations on batch-corrected data and output performance list of each method. Since there are no. of ways batch-correction can be evaluated and each method has some limitation, we have used a cocktail of methods to perform analysis. This function has both PCA-inspired as well as biology
 inspired qualitative assessment protocol for batch-correction.
 
-![Overview of implemented assessment methods.](/Users/madhulika/Desktop/Batchevaluation/data/figure2.png)
+![Overview of implemented assessment methods.](/data/figure2.png)
 
 Short detail of methods implemented in `batch_evaluation` function is given below-
 
@@ -220,7 +220,7 @@ assessment is a nested list of evaluation scores for each of the evaluation prot
 The following table explains how results from each evaluation protocol should be interpreted. PVCA, silhouette index and PcRegression measures residual `batch-effect` in corrected data, therefore for these measurements lower the score, better the performance will be. HVG (HVG.union & HVG.inersection) measures inherent biological heterogeneity, therefore higher the score, better will be method. Entropy measures entropy of batch-mixing, therefore; higher the score better the method is. Lastly, we also compute silhouette index using only gender-specific genes and gender meta-data. This gives us 
 a measure of the impact of batch-correction on gender-difference, which is a well-estabilshed biological phenotype. Ideally, any good batch-correction method should not decrease silhouette index of gender-based clustering after batch-correction.
 
-![Result interpretation.](/Users/madhulika/Desktop/Batchevaluation/data/figure3.png)
+![Result interpretation.](/figure3.png)
 
 ## Diagnostic plot
 Once, assessment is performed, in next step, results obtained from the `batch_evaluation` step can be further analyszed using
@@ -250,7 +250,7 @@ assess_RNA <- batch_evaluation(result_RNAseq, batch.factors=c("batch","sex"), RN
 Rank.plot(assess_RNA)
 
 ```
-![Diagnostic plot: RNAseq.](/Users/madhulika/Desktop/Batchevaluation/data/RNAseq_figure6.png)
+![Diagnostic plot: RNAseq.](/data/RNAseq_figure6.png)
 
 # Accessory function
 ## Detetction of batch-effects in raw merged dataset
