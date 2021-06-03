@@ -23,6 +23,7 @@
 #' @importFrom  purrr map map_dfr
 #' @importFrom  magrittr extract
 #' @importFrom RANN nn2
+#' @importFrom data.table as.data.table
 
 #'
 #' @include entropy.R
