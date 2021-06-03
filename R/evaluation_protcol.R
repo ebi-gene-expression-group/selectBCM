@@ -124,7 +124,7 @@ batch_evaluation <-function(result, batch.factors, experiment,N1,N2,filter)
         { warning('Gender-based silhoutte analysis is not performed as meta-experiment do not have a "sex" column')}
 
 
-      GS.hvg <- as.data.frame.DataTable(t(raw.input)) %>%
+      GS.hvg <- as.data.table(t(raw.input)) %>%
         split(as.factor(experiment[["batch"]])) %>% lapply(data.frame)  %>% map((hvg_result_batches))
       GS.hvg <- GS.hvg %>% map('HVG') %>% bind_rows
       rownames(GS.hvg) <- row.names(raw.input)
