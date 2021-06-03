@@ -36,7 +36,9 @@ Imports:
     cluster,
     statmod,
     tibble,
-    edgeR
+    edgeR,
+    data.table,
+    S4Vectors    
 Remotes: git::https://github.com/tengfei-emory/scBatch.git
 Collate: 
     'Metadatacreation.R'
