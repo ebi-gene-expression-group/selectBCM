@@ -29,7 +29,7 @@ evaluation <- if (evaluation$gender=="Gender-based silhoutte analysis is not per
 w_m <- do.call(rbind, lapply(evaluation, data.frame)) %>% t %>% as.data.frame
 
 w3_m <- w_m %>% mutate_at(vars(-c(pvca.batch,pcRegression,silhouette)),minus)
-w3_m <-mutate_each(w3_m, list(dense_rank))
+w3_m <-across(w3_m, list(dense_rank))
 
 w3_m <- w3_m %>% mutate(sumRank = rowSums(.)) %>% mutate_at(c("sumRank"), dense_rank)
 row.names(w3_m) <- rownames(w_m)
