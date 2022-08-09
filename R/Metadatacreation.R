@@ -15,6 +15,7 @@
 #' @import gtools
 #' @import readr
 #' @import Biobase
+#' @import tibble
 #' @importFrom magrittr extract
 #' @importFrom utils download.file
 #' @import SummarizedExperiment
@@ -90,7 +91,7 @@ remove_isolated_experiments<-function(experiments, biological.group){
 
 access_data<-function(experiment) UseMethod("access_data")
 access_data.SummarizedExperiment<-function(experiment){
-  return(experiment@assays$data$counts)
+  return(assay(experiment))
 }
 access_data.ExpressionSet<-function(experiment){
   return(experiment@assayData$exprs)
@@ -129,12 +130,18 @@ merge_experiments <- function(experiments, filter.unexpressed.genes=TRUE, log, f
   genes<-experiments %>% map(rownames)
   shared.genes<-genes %>% purrr::reduce(intersect)
   unshared.genes<-genes %>% map(setdiff %>% partial(y=shared.genes))
-  data<-experiments %>% map(~.x %>% access_data %>% extract(shared.genes,)) %>% purrr::reduce(cbind)
+
+  data <-experiments %>% map(~.x %>% access_data)%>%  map(~.x,magrittr::extract(~.x,shared.genes,))
+  data <- data %>% map (~.x %>% as_tibble(rownames = NA) %>% rownames_to_column()) %>% reduce(full_join,by ="rowname")
+  geneid <- data$rowname
+  data <- select(data,-"rowname")
+  row.names(data) <- geneid
+
   warning(unshared.genes %>% unlist %>% unique %>% length,' genes have been removed as they are not shared across the batches.')
   batch<-experiments %>% imap(~.y %>% rep(ncol(.x))) %>% unlist(use.names=FALSE) %>% factor
   if(filter.unexpressed.genes){
     unexpressed.genes <- data %>% t %>% data.frame %>% split(batch) %>% map(~colSums(.)==0) %>% purrr::reduce(`&`)
-    data%<>%extract(!unexpressed.genes,)
+    data <- data %>% filter(rowSums(across(where(is.numeric)))!=0)
     message(sum(unexpressed.genes),' genes have been removed as they were unexpressed across the samples of a batch.')
   }
   if(missing(log)){

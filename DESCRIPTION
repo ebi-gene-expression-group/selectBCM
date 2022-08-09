@@ -7,7 +7,7 @@ Maintainer: The package maintainer <madhulika@ebi.ac.uk>
 Description: Wrapper for batch evaluation and correction in gene-expression datasets
 License: GPL-3
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0
 VignetteBuilder: knitr
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
@@ -38,6 +38,7 @@ Imports:
     tibble,
     edgeR,
     data.table,
+    tidytable,
     S4Vectors    
 Remotes: git::https://github.com/tengfei-emory/scBatch.git
 Collate: 
@@ -49,10 +50,12 @@ Collate:
     'HVG.R'
     'PVCA.R'
     'Rank.plot.R'
+    'Rank_RNAseq.plot.R'
     'accessory.R'
     'batch_sil.R'
     'entropy.R'
     'pcRegression.R'
+    'evaluation_RNAseq.R'
     'evaluation_protcol.R'
     'raw.evaluation.R'
     'utils-pipe.R'

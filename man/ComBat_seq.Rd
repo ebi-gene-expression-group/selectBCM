@@ -38,8 +38,3 @@ data A probe x sample count matrix, adjusted for batch effects.
 \description{
 ComBat_seq is an extension to the ComBat method using Negative Binomial model.
 }
-\examples{
-
-
-
-}

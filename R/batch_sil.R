@@ -24,7 +24,7 @@
 #' @importFrom cluster silhouette
 #' @importFrom stats dist
 #' @export
-batch_sil <- function(pca.data, batch, nPCs = 20){
+batch_sil <- function(pca.data, batch, nPCs = 10){
   # in scone, they use svd to compute principal components.
   # For now, we'll keep the PCA object created in
   # prcomp to be consistent

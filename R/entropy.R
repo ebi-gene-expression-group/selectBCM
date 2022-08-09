@@ -1,8 +1,8 @@
 BatchEntropy <- function(dataset, batch0, L=100, M=100, k=100) {
   #entropy of batch mixing
   # L is the number bootstrapping times
-  # M is the number of randomly picked cells
-  # k is the number of nearest neighbours of cell (from all batches) to check
+  # M is the number of randomly picked biosamples
+  # k is the number of nearest neighbours of biosamples (from all batches) to check
 
   nbatches<-length(unique(batch0))
 

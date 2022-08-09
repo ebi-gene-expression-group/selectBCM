@@ -152,7 +152,7 @@ batchcorrected
 batch_correction.SummarizedExperiment <-function(experiment, model, k=NULL, batch="batch")
   {
   log<-experiment@assays@data %>% names %>% switch(log_counts=TRUE, counts=FALSE)
-  edata <- experiment@assays@data[[1]]
+  edata <- as.matrix(assay(experiment))
   edata <- edata[rowSums(edata)>0,]
   model.data<-model.frame(model, experiment@colData[all.vars(model)])
   mod=model.matrix(model, data=model.data)

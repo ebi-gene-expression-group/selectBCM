@@ -4,7 +4,7 @@
 \alias{batch_sil}
 \title{batch_sil}
 \usage{
-batch_sil(pca.data, batch, nPCs = 20)
+batch_sil(pca.data, batch, nPCs = 10)
 }
 \arguments{
 \item{pca.data}{a list as created by \code{prcomp},

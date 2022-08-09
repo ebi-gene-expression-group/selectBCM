@@ -32,11 +32,11 @@
 #' @include pcRegression.R
 #' @include batch_sil.R
 
-#' @name batch_evaluation
+#' @name batch_evaluation_RNAseq
 data(sex.genes, envir=environment())
 
 #' @export
-batch_evaluation <-function(result, batch.factors, experiment,N1,N2,filter)
+batch_evaluationn_RNAseq <-function(result, batch.factors, experiment,N1,N2,filter)
 {
 
   microarray.data <- function(filename) {
@@ -98,66 +98,49 @@ batch_evaluation <-function(result, batch.factors, experiment,N1,N2,filter)
 
 
 
-      silhouette.data <- map(expression.input, Batch.silhouette) %>% map_dfr(extract) %>% set_rownames("silhouette")
-      pcRegression.data <- map(expression.input, Batch.pcRegression) %>% map_dfr(extract) %>% set_rownames("pcRegression")
-      entropy.data <- map(expression.input, entropy)  %>% map_dfr(colMedians) %>% set_rownames("Entropy")
-      pvca.data <- map(expression.input, PVCA_result.eset)  %>% map_dfr(extract,batch.factors)%>% transpose_df  %>% purrr::set_names(colnames(silhouette.data)) %>% tbl_df %>% set_rownames(batch.factors)
-
-      genes <-  as.character(row.names(raw.input))
-      sex.genes <- Batchevaluation::sex.genes
-      sex.input <-     if(filter=='symbol'){
-        sex <- as.array(sex.genes$hgnc_symbol)
-      } else if(filter=='entrezgene_id'){
-        sex <- as.array(sex.genes$entrezgene_id)
-      } else {
-        sex <- as.array(sex.genes$ensembl_gene_id)
-      }
-      sex1.genes <- intersect(sex.input,genes)
-      Gender.data <- map(result, extractROWS,sex1.genes)
-      Gender.data <- if(experiment@class =="SummarizedExperiment") {
-        map(Gender.data,  seq.data)
-      } else {
-        map(Gender.data, microarray.data)
-      }
-      sex.data <- if (c("sex", "Gender", "Sex","gender") %in% names(data.frame(pheno.input))=="TRUE"){
-        map(Gender.data, sex.silhouette) %>% map_dfr(extract) %>% set_rownames("Gender")
-      } else
-        { warning('Gender-based silhoutte analysis is not performed as meta-experiment do not have a "sex" column')}
+  silhouette.data <- map(expression.input, Batch.silhouette) %>% map_dfr(extract) %>% set_rownames("silhouette")
+  pcRegression.data <- map(expression.input, Batch.pcRegression) %>% map_dfr(extract) %>% set_rownames("pcRegression")
+  entropy.data <- map(expression.input, entropy)  %>% map_dfr(colMedians) %>% set_rownames("Entropy")
+  pvca.data <- map(expression.input, PVCA_result.eset)  %>% map_dfr(extract,batch.factors)%>% transpose_df  %>% purrr::set_names(colnames(silhouette.data)) %>% tbl_df %>% set_rownames(batch.factors)
 
 
-      GS.hvg <- as.data.table(t(raw.input)) %>%
-        split(as.factor(experiment[["batch"]])) %>% lapply(data.frame)  %>% map((hvg_result_batches))
-      GS.hvg <- GS.hvg %>% map('HVG') %>% bind_rows
-      rownames(GS.hvg) <- row.names(raw.input)
 
-      GS1 <- GS.hvg %>%
-        rownames_to_column('gene') %>%
-        filter_if(is.numeric, all_vars(. > 0)) %>%
-        column_to_rownames('gene')
-      GS1 <- as.vector(row.names(GS1))
-      GS2 <- GS.hvg %>%
-        rownames_to_column('gene') %>%
-        filter_if(is.numeric, any_vars(. == 1)) %>%
-        column_to_rownames('gene')
-      GS2 <- as.vector(row.names(GS2))
-
-      GS_corrected <- map(expression.input,hvg_result_corrected) %>% map('HVG') %>% bind_rows
-      GS_corrected$name <- row.names(raw.input)
-
-      GS_intersection <- GS_corrected %>% filter(name %in% GS1) %>% select(-name) %>% t
-      GS_union <- GS_corrected %>% filter(name %in% GS2) %>% select(-name) %>% t
-
-      #HVG.intersection <- as.data.frame(rowSums(GS_intersection)/length(GS1)) %>% t %>% tbl_df  %>% set_rownames("HVG.intersection")
-      HVG.union <-  as.data.frame(rowSums(GS_union)/length(GS2)) %>% t %>% tbl_df%>% set_rownames("HVG.union")
+  sex.data <- ('Gender-based silhoutte analysis is not performed as meta-experiment do not have a "sex" column')
 
 
-      evaluation <- list()
-        evaluation$pvca <- pvca.data
-        evaluation$silhouette <- silhouette.data
-        evaluation$pcRegression <- pcRegression.data
-        evaluation$entropy <-  entropy.data
-        evaluation$gender <-  sex.data
-        evaluation$HVG.union<-  HVG.union
-        evaluation
+  GS.hvg <- as.data.table(t(raw.input)) %>%
+    split(as.factor(experiment[["batch"]])) %>% lapply(data.frame)  %>% map((hvg_result_batches))
+  GS.hvg <- GS.hvg %>% map('HVG') %>% bind_rows
+  rownames(GS.hvg) <- row.names(raw.input)
+
+  GS1 <- GS.hvg %>%
+    rownames_to_column('gene') %>%
+    filter_if(is.numeric, all_vars(. > 0)) %>%
+    column_to_rownames('gene')
+  GS1 <- as.vector(row.names(GS1))
+  GS2 <- GS.hvg %>%
+    rownames_to_column('gene') %>%
+    filter_if(is.numeric, any_vars(. == 1)) %>%
+    column_to_rownames('gene')
+  GS2 <- as.vector(row.names(GS2))
+
+  GS_corrected <- map(expression.input,hvg_result_corrected) %>% map('HVG') %>% bind_rows
+  GS_corrected$name <- row.names(raw.input)
+
+  GS_intersection <- GS_corrected %>% filter(name %in% GS1) %>% select(-name) %>% t
+  GS_union <- GS_corrected %>% filter(name %in% GS2) %>% select(-name) %>% t
+
+  #HVG.intersection <- as.data.frame(rowSums(GS_intersection)/length(GS1)) %>% t %>% tbl_df  %>% set_rownames("HVG.intersection")
+  HVG.union <-  as.data.frame(rowSums(GS_union)/length(GS2)) %>% t %>% tbl_df%>% set_rownames("HVG.union")
+
+
+  evaluation <- list()
+  evaluation$pvca <- pvca.data
+  evaluation$silhouette <- silhouette.data
+  evaluation$pcRegression <- pcRegression.data
+  evaluation$entropy <-  entropy.data
+  evaluation$gender <-  sex.data
+  evaluation$HVG.union<-  HVG.union
+  evaluation
 }
 
