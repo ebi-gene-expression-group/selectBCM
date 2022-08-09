@@ -1,4 +1,4 @@
-# Batchevaluation wrapper: Short introduction
+# SelectBCM wrapper: Short introduction
 Madhulika Mishra
 
 
