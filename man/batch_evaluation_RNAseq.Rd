@@ -2,7 +2,7 @@
 % Please edit documentation in R/evaluation_RNAseq.R
 \name{batch_evaluation_RNAseq}
 \alias{batch_evaluation_RNAseq}
-\title{Assessment of batch-correction methods}
+\title{Assessment of batch-correction methods for bulk RNAseq experiments}
 \arguments{
 \item{result}{A list of wrapped batch-corrected experiments obtained from the last step ('batch_correction').}
 

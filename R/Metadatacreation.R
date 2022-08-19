@@ -162,7 +162,7 @@ merge_experiments <- function(experiments, filter.unexpressed.genes=TRUE, log, f
       ),
     ExpressionSet=
       ExpressionSet(
-        assayData=data,
+        assayData=as.matrix(data),
         phenoData=experiments %>% map(~.x@phenoData@data) %>% smartbind(list=.) %>% set_rownames(experiments %>% map(colnames) %>% unlist) %>% cbind(batch) %>% AnnotatedDataFrame
       )
   ))

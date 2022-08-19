@@ -1,4 +1,4 @@
-#' Assessment of batch-correction methods
+#' Assessment of batch-correction methods for bulk RNAseq experiments
 #' @description  The function performs various evaluations on batch-corrected data and output
 #' performance list of each individual method. Since there are no. of ways batch-correction can
 #' be evaluated and each method has its own limitation, we have used a cocktail of methods to
@@ -36,7 +36,7 @@
 data(sex.genes, envir=environment())
 
 #' @export
-batch_evaluationn_RNAseq <-function(result, batch.factors, experiment,N1,N2,filter)
+batch_evaluationn.RNAseq <-function(result, batch.factors, experiment,N1,N2,filter)
 {
 
   microarray.data <- function(filename) {
