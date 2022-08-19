@@ -32,11 +32,11 @@
 #' @include pcRegression.R
 #' @include batch_sil.R
 
-#' @name batch_evaluation
+#' @name batch_evaluation.microarray
 data(sex.genes, envir=environment())
 
 #' @export
-batch_evaluation_m <-function(result, batch.factors, experiment,N1,N2,filter)
+batch_evaluation.microarray <-function(result, batch.factors, experiment,N1,N2,filter)
 {
 
   microarray.data <- function(filename) {

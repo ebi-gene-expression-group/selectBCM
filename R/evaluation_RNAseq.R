@@ -32,7 +32,7 @@
 #' @include pcRegression.R
 #' @include batch_sil.R
 
-#' @name batch_evaluation_RNAseq
+#' @name batch_evaluationn.RNAseq
 data(sex.genes, envir=environment())
 
 #' @export

@@ -61,6 +61,6 @@ Collate:
     'entropy.R'
     'pcRegression.R'
     'evaluation_RNAseq.R'
-    'evaluation_protcol_microarray.R'
+    'evaluation_microarray.R'
     'raw.evaluation.R'
     'utils-pipe.R'
