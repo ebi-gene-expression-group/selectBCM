@@ -166,9 +166,13 @@ batch_correction.SummarizedExperiment <-function(experiment, model, k=NULL, batc
                                       colData = experiment@colData,
                                       metadata = experiment@metadata)
 
-  data.ComBat_seq <-  SummarizedExperiment(assays=list(ComBat_seq(edata,batch= as.numeric(as.factor(experiment$batch)))),
-                                       colData = experiment@colData,
-                                       metadata = experiment@metadata)
+
+  data.ComBat_seq_null <-  SummarizedExperiment(assays=list(ComBat_seq(edata,batch= as.numeric(as.factor(experiment$batch)))),
+                                                colData = experiment@colData,
+                                                metadata = experiment@metadata)
+  data.ComBat_Seq_full <-  SummarizedExperiment(assays=list(ComBat_seq(edata,group= as.numeric(as.factor(experiment$Disease)),batch= as.numeric(as.factor(experiment$batch)))),
+                                                colData = experiment@colData,
+                                                metadata = experiment@metadata)
 
   data.MNN <-  SummarizedExperiment(assays=list(mnnCorrect(edata, batch=as.numeric(as.factor(experiment$batch)), cos.norm.out = F)@assays@data$corrected),
                                     colData = experiment@colData,
@@ -203,7 +207,8 @@ batch_correction.SummarizedExperiment <-function(experiment, model, k=NULL, batc
  batchcorrected <- list()
   batchcorrected$data.limma <- data.limma
   batchcorrected$data.ComBat <- data.ComBat
-  batchcorrected$data.ComBat_seq <- data.ComBat_seq
+  batchcorrected$data.ComBat_Seq_full <- data.ComBat_Seq_full
+  batchcorrected$data.ComBat_seq_null <- data.ComBat_seq_null
   batchcorrected$data.MNN <- data.MNN
   batchcorrected$data.RUVs <- data.RUVs
   batchcorrected$data.scBatch  <- data.scBatch

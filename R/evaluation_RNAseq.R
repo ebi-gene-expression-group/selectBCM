@@ -32,11 +32,11 @@
 #' @include pcRegression.R
 #' @include batch_sil.R
 
-#' @name batch_evaluationn.RNAseq
+#' @name batch_evaluation.RNAseq
 data(sex.genes, envir=environment())
 
 #' @export
-batch_evaluationn.RNAseq <-function(result, batch.factors, experiment,N1,N2,filter)
+batch_evaluation.RNAseq <-function(result, batch.factors, experiment,N1,N2,filter)
 {
 
   microarray.data <- function(filename) {
@@ -105,8 +105,6 @@ batch_evaluationn.RNAseq <-function(result, batch.factors, experiment,N1,N2,filt
 
 
 
-  sex.data <- ('Gender-based silhoutte analysis is not performed as meta-experiment do not have a "sex" column')
-
 
   GS.hvg <- as.data.table(t(raw.input)) %>%
     split(as.factor(experiment[["batch"]])) %>% lapply(data.frame)  %>% map((hvg_result_batches))
@@ -139,7 +137,6 @@ batch_evaluationn.RNAseq <-function(result, batch.factors, experiment,N1,N2,filt
   evaluation$silhouette <- silhouette.data
   evaluation$pcRegression <- pcRegression.data
   evaluation$entropy <-  entropy.data
-  evaluation$gender <-  sex.data
   evaluation$HVG.union<-  HVG.union
   evaluation
 }

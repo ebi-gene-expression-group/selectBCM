@@ -1,3 +1,4 @@
+#' Rank plot of batch-correction methods provided by SelectBCM tool
 #' @import dplyr
 #' @import ggplot2
 #' @importFrom hrbrthemes theme_ipsum
