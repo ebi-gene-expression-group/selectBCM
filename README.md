@@ -215,8 +215,7 @@ assessment is a nested list of evaluation scores for each of the evaluation prot
 
 
 ### Interpretation of result of evaluation protocols
-The following table explains how results from each evaluation protocol should be interpreted. PVCA, silhouette index and PcRegression measures residual `batch-effect` in corrected data, therefore for these measurements lower the score, better the performance will be. HVG (HVG.union & HVG.inersection) measures inherent biological heterogeneity, therefore higher the score, better will be method. Entropy measures entropy of batch-mixing, therefore; higher the score better the method is. Lastly, we also compute silhouette index using only gender-specific genes and gender meta-data. This gives us 
-a measure of the impact of batch-correction on gender-difference, which is a well-estabilshed biological phenotype. Ideally, any good batch-correction method should not decrease silhouette index of gender-based clustering after batch-correction.
+The following table explains how results from each evaluation protocol should be interpreted. PVCA, silhouette index and PcRegression measures residual `batch-effect` in corrected data, therefore for these measurements lower the score, better the performance will be. HVG (HVG.union & HVG.inersection) measures inherent biological heterogeneity, therefore higher the score, better will be method. Entropy measures entropy of batch-mixing, therefore; higher the score better the method is.
 
 
 ## Diagnostic plot
