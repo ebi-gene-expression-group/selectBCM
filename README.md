@@ -1,14 +1,12 @@
 # SelectBCM wrapper: Short introduction
-Madhulika Mishra
+"Madhulika Mishra, Lucas Barck, Pablo Moreno, Guillaume Heger, Janet M. Thornton, Irene Papatheodorou"
 
 
 # Introduction
 Over time, a vast amount of genomic information has been accumulated in the public repository mainly in GEO and ArrayExpress for the given phenotype. However, it is still challenging to integrate different high throughput experiments reflecting similar phenotype because of various other non-biological confounding factors such as type of array, date of experiment, the laboratory where data was generated, etc. These variations can be summarized as `batch effects`. In order to solve this issue, various batch-effect correction algorithms(BECAs) such as ComBat, SVA, and RUV have been developed to remove such batch effects from the integrated data and have shown promising results in mining biological signals. Evaluation of batch correction protocols involves mainly looking at the Principal Component Analysis (PCA) plot or Relative log expression (RLE) plot or sometimes by measuring Batch entropy.
 
-This project is to increase the reusability and reproducibility of these workflows in order- to facilitate batch correction, comparison, and benchmarking for ExpressionAtlas. Our strategy is to provide command-line access to individual library functions through simple wrapper scripts packaged in R wrapper. Batchevaluation R Wrapper contains implements of a variety of methods for batch correction of microarray as well as for bulk RNA-seq data. Batchevaluation is now available and documented in the [package `Batchevaluation`](https://github.com/madhulika-EBI/Batchevaluation).
-
 # Project overview
-Batchevaluation analyses include step such as:
+SelectBCM analyses include step such as:
 
 * Fetching experiments from ExpressionAtlas based on a biological factor of interest, such as disease, species and tissue
 * Removing isolated experiments
@@ -31,7 +29,7 @@ conda install -c conda-forge r-foreign
 ```
 ```R
 library(devtools)
-install_github('madhulika-EBI/Batchevaluation')
+install_github('https://github.com/ebi-gene-expression-group/selectBCM')
 ```
 
 ##  Manually
@@ -39,15 +37,15 @@ install_github('madhulika-EBI/Batchevaluation')
 Please download the package as `zip` archive and install it via
 
 ```R
-install.packages('Batchevaluation.zip', repos = NULL, type = 'source')
+install.packages('SelectBCM.zip', repos = NULL, type = 'source')
 ```
-# Overview of steps available in Batchevaluation
-Batchevaluation package has several steps ranging from meta-experiment creation to batch-effect evaluation step (`Figure1`). In the current wrapper, scripts are written in a user-friendly way. Short description of each step and example is given below -
+# Overview of steps available in SelectBCM
+SelectBCM package has several steps ranging from meta-experiment creation to batch-effect evaluation step (`Figure1`). In the current wrapper, scripts are written in a user-friendly way. Short description of each step and example is given below -
 
-![Workflow of the Batchevaluation package.](/data/figure1.png)
+![Workflow of the SelectBCM package.](/data/figure1.png)
 
 ## loading library
-Sometime loading of 'magrittr','purrr' and 'dplyr' with `Batchevaluation` package  is deprecated, therefore, it is recommended to load all of these together.
+Sometime loading of 'magrittr','purrr' and 'dplyr' with `SelectBCM` package  is deprecated, therefore, it is recommended to load all of these together.
 
 **Recommendation:** Computation of scBatch requires high memory allocation for Rcpp, therefore it is advised to increase R memory.
 
@@ -55,7 +53,7 @@ Sometime loading of 'magrittr','purrr' and 'dplyr' with `Batchevaluation` packag
 library(magrittr)
 library(purrr)
 library(dplyr)
-library(Batchevaluation)
+library(SelectBCM)
 ```
 
 ## Loading data in R
@@ -158,7 +156,7 @@ This function has following arguments-
 Since, this merged dataset had some issues while merging, phenodata was added separately. Phenodata is also available with the package in `data` folder and can be accessed like this: 
 
 ```r
-load("~/Batchevaluation/data/pheno.example1.Rdata")
+load("~/SelectBCM/data/pheno.example1.Rdata")
 experiments <- ExpressionSet(exprs(experiments), phenoData=pheno.experiment1)
 
 ``` 
@@ -197,9 +195,7 @@ Short detail of methods implemented in `batch_evaluation` function is given belo
   * **silhouette**- Determine `batch effect` using the silhouette coefficient (adopted from scone) with default setting (nPcs=3). Taken from `kBET` [package]( https://github.com/theislab/kBET).
   * **pcRegression**- Determines `batch effect` by a linear model fit of principal components and a batch (categorical) variable with a default setting (n_top=20). Taken from `kBET` [package]( https://github.com/theislab/kBET).
  * **entropy**- Determines the batch effect by computing the entropy of mixing. It is a parameter to quantify the extent of the intermingling of cells from different batches. Taken from `MNN` [package]( https://github.com/MarioniLab/MNN2017).For calculation, first two Pcs are used as input. Since,depending on no. of samples in merged dataset, it is important to choose N1 and N2 for Batchentropy calculation, we have put both arguments as variables here.
- * **gender**- Determines `overfitting issue` using the silhouette coefficient with default setting (nPcs=3). Method computes silhouette coefficient using gender-specific genes and gender/sex meta-data column. Higher the silhouette coefficient, lesser overfitting will be expected because of `batch-correction`.**Warning**- If phenodata(SDRF) file doesn't contain sex/Gender/Sex/gender column, than this analysis will be skipped.
- * **HVG.intersection**- This analysis calculates fraction of conserved highly variable genes (HVG) according to Brennecke et al., 2013 [publication](https://www.nature.com/articles/nmeth.2645). This indirectly reflects whether biological heterogeneity is preserved or not during `batch-correction`. For this calculation, we consider the ratio of HVG genes after correction/conserved HVG genes among different batches.
- * **HVG.union**- This calculation also accounts for perseverance of biological heterogeneity by measuring ratio of conservation of HVG genes after batch correction. This function calculates ratio of number of conserved HVG after batch correction/ Union of HVG genes among all the batches. Therefore, this function is less stringent compared to `HVG.intersection` function.
+ * **HVG.union**-  This analysis calculates fraction of conserved highly variable genes (HVG) according to Brennecke et al., 2013 [publication](https://www.nature.com/articles/nmeth.2645). This calculation also accounts for perseverance of biological heterogeneity by measuring ratio of conservation of HVG genes after batch correction. This function calculates ratio of number of conserved HVG after batch correction/ Union of HVG genes among all the batches. Therefore, this function is less stringent compared to `HVG.intersection` function.
 
 This function has following arguments-
 
@@ -222,7 +218,6 @@ assessment is a nested list of evaluation scores for each of the evaluation prot
 The following table explains how results from each evaluation protocol should be interpreted. PVCA, silhouette index and PcRegression measures residual `batch-effect` in corrected data, therefore for these measurements lower the score, better the performance will be. HVG (HVG.union & HVG.inersection) measures inherent biological heterogeneity, therefore higher the score, better will be method. Entropy measures entropy of batch-mixing, therefore; higher the score better the method is. Lastly, we also compute silhouette index using only gender-specific genes and gender meta-data. This gives us 
 a measure of the impact of batch-correction on gender-difference, which is a well-estabilshed biological phenotype. Ideally, any good batch-correction method should not decrease silhouette index of gender-based clustering after batch-correction.
 
-![Result interpretation.](/data/figure3.png)
 
 ## Diagnostic plot
 Once, assessment is performed, in next step, results obtained from the `batch_evaluation` step can be further analyszed using
@@ -230,29 +225,17 @@ Once, assessment is performed, in next step, results obtained from the `batch_ev
 
 This function has only one argument- 
 
-*  `evaluation` is an evaluation list obtained from the previous step `batch_evaluation`.
+*  `diagnostic` is an evaluation list obtained from the previous step `batch_evaluation`.
 
 
 ```r
- final <- Rank.plot(assessment)
+ final <- bcm_rank(assessment)
 ``` 
 **final** is a list of two data-frame- (a) raw - simple data-frame output of evaluation matrix and, (b) ranked- Ranked data-frame of evaluation matrix which has additional column `sumRank` containing final Rank of each method. Ranks are in descending performance order, i.e. the method having score 1 will be the best method. This function also outputs a `diagnostic plot`, where x-axis is the evaluation protocol and y-axis is the Rank of each batch-correction method.
 
-![Diagnostic plot.](/data/Figure_4.png)
+![Diagnostic plot.](/data/Diagnostic_plot.svg)
 
 
-# Workflow for bulk-RNAseq data
-```r
-
-RNAseq_experiments <- download_experiments_from_ExpressionAtlas('E-MTAB-8549','E-MTAB-5060')
-RNAseq_experiments %<>% remove_isolated_experiments('disease')
-RNAseq_experiments%<>% merge_experiments
-result_RNAseq <- batch_correction(experiment= RNAseq_experiments,model=~disease, batch = "batch")
-assess_RNA <- batch_evaluation(result_RNAseq, batch.factors=c("batch","sex"), RNAseq_experiments,10,10,'ensembl_gene_id')
-Rank.plot(assess_RNA)
-
-```
-![Diagnostic plot: RNAseq.](/data/RNAseq_figure6.png)
 
 # Accessory function
 ## Detetction of batch-effects in raw merged dataset
