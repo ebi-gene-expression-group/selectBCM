@@ -5,30 +5,30 @@ date: "01/06/2020"
 ---
 
   # Introduction
-  Over time, a vast amount of genomic information for the given phenotype has been accumulated in the public repository mainly in GEO and ArrayExpress. However, it is still challenging to integrate different high throughput experiments reflecting similar phenotypes because of various other non-biological confounding factors such as type of array, date of experiment, a laboratory where data was generated, etc and can be summarised as ‘batch effects’. To ComBat this issue, various batch-effect correction algorithms(BECAs) such as ComBat, SVA, and RUV have been developed to remove such batch effects from the integrated data and have shown promising results in mining biological signals. Evaluation of batch correction protocols are mainly looking at the Principle component plots or RLE plot or sometimes by measuring batch entropy.
-This is a project to increase the reusability and reproducibility of these workflows, to facilitate batch correction, comparison, and benchmarking for ExpressionAtlas. Our strategy is to provide command-line access to individual library functions through simple wrapper scripts packaged in R wrapper. Batchevaluation R Wrapper contains implements of a variety of methods for batch correction of microarray and bulk RNA-seq data.
+  # Over time, a vast amount of genomic information for the given phenotype has been accumulated in the public repository mainly in GEO and ArrayExpress. However, it is still challenging to integrate different high throughput experiments reflecting similar phenotypes because of various other non-biological confounding factors such as type of array, date of experiment, a laboratory where data was generated, etc and can be summarised as ‘batch effects’. To ComBat this issue, various batch-effect correction algorithms(BECAs) such as ComBat, SVA, and RUV have been developed to remove such batch effects from the integrated data and have shown promising results in mining biological signals. Evaluation of batch correction protocols are mainly looking at the Principle component plots or RLE plot or sometimes by measuring batch entropy.
+  # This is a project to increase the reusability and reproducibility of these workflows, to facilitate batch correction, comparison, and benchmarking for ExpressionAtlas. Our strategy is to provide command-line access to individual library functions through simple wrapper scripts packaged in R wrapper. Batchevaluation R Wrapper contains implements of a variety of methods for batch correction of microarray and bulk RNA-seq data.
 
 # Project overview
-Batchevaluation analyses include step such as:
+  # Batchevaluation analyses include step such as:
 
-  * Fetching experiments from ExpressionAtlas based on a biological factor of interest, such as Disease, species,and tissue
-* Removing isolated experiments
-* Merging experiments in a single dataset
-* Evaluation of batch effect in the merged dataset
-* Correcting batch effects
-* Evaluation of batch correction methods
+  #   * Fetching experiments from ExpressionAtlas based on a biological factor of interest, such as Disease, species,and tissue
+  # * Removing isolated experiments
+  # * Merging experiments in a single dataset
+# * Evaluation of batch effect in the merged dataset
+# * Correcting batch effects
+# * Evaluation of batch correction methods
 
 
-These steps may be implemented in a variety of ways including stand-alone tools, scripts, or R package functions. To compare equivalent logical steps between workflows, and to ‘mix and match’ those components for optimal workflows is, therefore, a challenging exercise without additional infrastructure. The current R package provides flexibale framework to perform batch correction and evaluate effect of batch correction on the given dataset.
+# These steps may be implemented in a variety of ways including stand-alone tools, scripts, or R package functions. To compare equivalent logical steps between workflows, and to ‘mix and match’ those components for optimal workflows is, therefore, a challenging exercise without additional infrastructure. The current R package provides flexibale framework to perform batch correction and evaluate effect of batch correction on the given dataset.
 
 
 ## Installation
 
-Installation should take less than 5 min.
+# Installation should take less than 5 min.
 
 ### Via Github and devtools
 
-If you want to install the package directly from Github, I recommend to use the `devtools` package.
+# If you want to install the package directly from Github, I recommend to use the `devtools` package.
 
 ```R
 library(devtools)
@@ -37,14 +37,14 @@ install_github('XXXXXXXX') link is not up yet
 
 ### Manually
 
-Please download the package as `zip` archive and install it via
+# Please download the package as `zip` archive and install it via
 
 ```R
 install.packages('Batchevaluation.zip', repos = NULL, type = 'source')
 ```
 
 ## Installing the dependencies (first use)
-To run the following functions, you will need some packages that can be installed using these commands in R :
+# To run the following functions, you will need some packages that can be installed using these commands in R :
   ```r
 install.packages(c('magrittr','stringr','purrr','ggplot2','igraph','gtools'))
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -54,27 +54,27 @@ BiocManager::install('RUVSeq')
 BiocManager::install('batchelor')
 ```
 ## Loading data in R
-If the data files are already on your computer, you can use this step. If you want to download data from Expression Atlas, skip this part and go directly to "Downloading data from Expression Atlas".
+# If the data files are already on your computer, you can use this step. If you want to download data from Expression Atlas, skip this part and go directly to "Downloading data from Expression Atlas".
 
-- Put the data files in `.Rdata` format in a directory containing only them. (The R objects contained in those files must be of class `SimpleList` with a `$rnaseq` slot which is a `SummarizedExperiment` object containing the data.)
-- Load all the experiments in a list using the function `load_experiments`
+# - Put the data files in `.Rdata` format in a directory containing only them. (The R objects contained in those files must be of class `SimpleList` with a `$rnaseq` slot which is a `SummarizedExperiment` object containing the data.)
+# - Load all the experiments in a list using the function `load_experiments`
 
 ```r
 experiments <- load_experiments('directory_path')
 experiments<-load_experiments('./')
 ```
-Example Microarray data is provided in **example1** folder of the package.
+# Example Microarray data is provided in **example1** folder of the package.
 
 ## Downloading data from Expression Atlas
-If you want to use data from Expression Atlas that can be downloaded in `.Rdata` format, you can use the function `download_experiments_from_ExpressionAtlas` in this way :
+# If you want to use data from Expression Atlas that can be downloaded in `.Rdata` format, you can use the function `download_experiments_from_ExpressionAtlas` in this way :
 
   ```r
 experiments <- download_experiments_from_ExpressionAtlas('E-MTAB-3718','E-MTAB-3725','E-GEOD-44366','E-GEOD-74747')
 ```
 
-This downloads the experiments in a new directory called "experiments" in your working directory and loads all the experiments in R within a list, using `load_experiments` function.
+# This downloads the experiments in a new directory called "experiments" in your working directory and loads all the experiments in R within a list, using `load_experiments` function.
 
-After having loaded the experiments, you get a list of `SummarizedExperiment` or list of `ExpressionSet` object :
+# After having loaded the experiments, you get a list of `SummarizedExperiment` or list of `ExpressionSet` object :
   ```
 > experiments
 $GSE1297_rawdata.Rdata
@@ -111,9 +111,9 @@ To correct batch effect, one needs to take the biological characteristics of the
 experiments %<>% remove_isolated_experiments('Tissue')
 ```
 
-WARNING : this function only removes the isolated experiments. Although it is still possible that two or more unconnected groups of experiments remain, within which the experiments are connected. In this case, batch effect correction is not possible neither and one has to choose a group of experiments manually.
+# WARNING : this function only removes the isolated experiments. Although it is still possible that two or more unconnected groups of experiments remain, within which the experiments are connected. In this case, batch effect correction is not possible neither and one has to choose a group of experiments manually.
 
-The two following plots are displayed by the function. The first one shows the graph of intersections of all the experiments before the removal of isolated ones. The second shows the same graph after their removal.
+# The two following plots are displayed by the function. The first one shows the graph of intersections of all the experiments before the removal of isolated ones. The second shows the same graph after their removal.
 
 ## Merging experiments in a single dataset
 The function `merge_experiments` merges all the experiments in the list in a single `SummarizedExperiment` or `ExpressionSet` object and doesn't perform any correction. This function has two additional arguments `log` and `filter` (respectively set to `TRUE` and `FALSE` by default).

@@ -2,9 +2,10 @@
 % Please edit documentation in R/M2.R
 \name{merge_experiment.RNAseq}
 \alias{merge_experiment.RNAseq}
+\alias{merge_experiment.SummarizedExperiment}
 \title{Rough merger of RNAseq experiments}
 \usage{
-merge_experiment.RNAseq(
+merge_experiment.SummarizedExperiment(
   experiments,
   filter.unexpressed.genes = TRUE,
   log,

@@ -13,7 +13,7 @@
 
 
 #' @export
-merge_experiment.RNAseq <- function(experiments, filter.unexpressed.genes=TRUE, log, force=FALSE)
+merge_experiment.SummarizedExperiment <- function(experiments, filter.unexpressed.genes=TRUE, log, force=FALSE)
 {
 
   if(experiments %>% map(class) %>% unlist %>% unique %>% length %>% is_greater_than(1) & !force) stop("The experiments must have the same class. Their classes are :\n", experiments %>% map(class) %>% unlist)

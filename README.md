@@ -3,7 +3,8 @@
 
 
 # Introduction
-Over time, a vast amount of genomic information has been accumulated in the public repository mainly in GEO and ArrayExpress for the given phenotype. However, it is still challenging to integrate different high throughput experiments reflecting similar phenotype because of various other non-biological confounding factors such as type of array, date of experiment, the laboratory where data was generated, etc. These variations can be summarized as `batch effects`. In order to solve this issue, various batch-effect correction algorithms(BECAs) such as ComBat, SVA, and RUV have been developed to remove such batch effects from the integrated data and have shown promising results in mining biological signals. Evaluation of batch correction protocols involves mainly looking at the Principal Component Analysis (PCA) plot or Relative log expression (RLE) plot or sometimes by measuring Batch entropy.
+Integrating information from bulk transcriptomes from different experiments can potentially increase the impact of individual studies in areas such as biomedicine. However, it remains a challenge, even though they are essential data sources for basic and disease biology. Batch-effect corrections for both experimental and technological variations in transcriptomes are one of the main challenges in this domain. To handle this, various batch-correction methods(BCMs) have been developed in recent times. However, the need for a user-friendly workflow to select the most appropriate BCM for the given set of experiments hinders the application of batch correction at a large scale, such as required for performing multi-cohort transcriptomic analysis. In the current project, we developed an R tool named “SelectBCM Tool”  to increase the reusability and reproducibility of these BCMs in order- to facilitate batch correction, comparison and selection of BCMs to solve the problem of choosing the most suitable batch correction method for a set of bulk transcriptomic experiments. 
+
 
 # Project overview
 SelectBCM analyses include step such as:
@@ -19,25 +20,26 @@ SelectBCM analyses include step such as:
 These steps may be implemented in a variety of ways including stand-alone tools, scripts or R package functions. To compare equivalent logical steps between workflows, and to ‘mix and match’ those components for optimal workflows is, therefore a challenging exercise without having additional infrastructure. The current R package provides a flexibility to perform batch correction and evaluation of various batch-correction methods for given dataset. Finally, it provide **performance rank** of each BECAs for the given dataset.
 
 
-## Via Github and devtools
+# Installation
 
-If you want to install the package directly from Github, I recommend using the `devtools` package. Package uses r-base=3.6.3, therefore it is advised to initiate conda environment with r-base=3.6.3. Wrapper uses "foreign"  package as dependency which is no more supported by cran, therefore it should be installed via conda before hand. 
+
+##If you want to install the package directly from Github, I recommend using the `devtools` ##package. Package uses r-base=3.6.3, therefore it is advised to initiate conda environment ##with r-base=3.6.3. Wrapper uses "foreign"  package as dependency which is no more ##supported by cran, therefore it should be installed via conda before hand. 
 
 ```
-conda create -p ./venv  -c conda-forge r-base=3.6.3
-conda install -c conda-forge r-foreign
+##conda create -p ./venv  -c conda-forge r-base=3.6.3
+## conda install -c conda-forge r-foreign
 ```
 ```R
-library(devtools)
-install_github('https://github.com/ebi-gene-expression-group/selectBCM')
+
+##  install_github('https://github.com/ebi-gene-expression-group/selectBCM')
 ```
 
 ##  Manually
 
-Please download the package as `zip` archive and install it via
+##Please download the package as `zip` archive and install it via
 
 ```R
-install.packages('SelectBCM.zip', repos = NULL, type = 'source')
+##install.packages('SelectBCM.zip', repos = NULL, type = 'source')
 ```
 # Overview of steps available in SelectBCM
 SelectBCM package has several steps ranging from meta-experiment creation to batch-effect evaluation step (`Figure1`). In the current wrapper, scripts are written in a user-friendly way. Short description of each step and example is given below -
@@ -53,6 +55,7 @@ Sometime loading of 'magrittr','purrr' and 'dplyr' with `SelectBCM` package  is 
 library(magrittr)
 library(purrr)
 library(dplyr)
+library(Biobase)
 library(SelectBCM)
 ```
 
@@ -77,7 +80,7 @@ Example Microarray data is provided in **example1** folder of the package.
 If you want to use data from Expression Atlas that can be downloaded in `.Rdata` format, you can use the function `download_experiments_from_ExpressionAtlas` in this way :
 
 ```r
-experiments <- download_experiments_from_ExpressionAtlas(E-MTAB-8549','E-MTAB-5060')
+experiments <- download_experiments_from_ExpressionAtlas('E-MTAB-8549','E-MTAB-5060')
 *** will download RNAseq experiments from expressionatlas.
 ```
 
@@ -91,7 +94,7 @@ After having loaded the experiments, you will get a list of either `SummarizedEx
 To correct the `batch effect`, one needs to take the biological characteristics of the samples into account (`Tissue` in our example). If no sample of an experiment shares biological characteristics with samples from other batches, it is not possible to correct batch effect with these batches because one cannot distinguish the biological difference from the artifact. The function `remove_isolated_experiments` removes the isolated experiments and plots graphs of intersections between the experiments before and after removal.
 
 ```r
-experiments %<>% remove_isolated_experiments('Tissue')
+experiments %<>% remove_isolated_experiments('organism')
 ```
 
 **WARNING:** this function only removes the isolated experiment. Although it is still possible that two or more unconnected groups of experiments remain, within which the experiments are connected. In this case, batch effect correction is not possible and one will have to choose a group of experiments manually.
@@ -105,9 +108,7 @@ The function `merge_experiments` merges all the experiments in the list in a sin
 *  The `filter` argument determines whether to filter genes for which all the samples of a batch have zero-counts. Set it to `TRUE` if you have issues in running ComBat at the next step.
 
 ```r
-experiments %<>% merge_experiments
-#OR
-experiments %<>% merge_experiments(log=TRUE,filter=FALSE)
+experiments %<>% merge_experiments.SummarizedExperiment()
 
 ```
 `experiments` is now an only `ExpressionSet` object containing the information about batches both in its `@metadata` and `@colData` slots :
@@ -228,7 +229,7 @@ This function has only one argument-
 
 
 ```r
- final <- bcm_rank(assessment)
+ final <- bcm_ranking(assessment)
 ``` 
 **final** is a list of two data-frame- (a) raw - simple data-frame output of evaluation matrix and, (b) ranked- Ranked data-frame of evaluation matrix which has additional column `sumRank` containing final Rank of each method. Ranks are in descending performance order, i.e. the method having score 1 will be the best method. This function also outputs a `diagnostic plot`, where x-axis is the evaluation protocol and y-axis is the Rank of each batch-correction method.
 

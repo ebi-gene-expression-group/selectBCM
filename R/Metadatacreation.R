@@ -37,12 +37,13 @@ load_experiments <- function(directory, names=dir(directory), item.SimpleList='r
 #' @details  The experiment should be either bulk-RNAseq(SummarizedExperiment) or microarray(ExpressionSet).
 #'WARNING: Different types of experiment should not be processed together. For example, one SummarizedExperiment with expressionSet experiment, otherwise it will cause an error in further steps.
 #' @export
+
 download_experiments_from_ExpressionAtlas<-function(..., destdir=getwd() %>% paste('experiments',sep='/')){
   if(!(destdir %>% dir.exists) ){
     destdir %>% dir.create
   }
   for(experiment in list(...)){
-    paste0('https://wwwdev.ebi.ac.uk/gxa/experiments-content/',experiment,'/static/',experiment,'-atlasExperimentSummary.Rdata') %>% download.file(destfile = paste0(destdir,"/",experiment,".Rdata"))
+    paste0('http://ftp.ebi.ac.uk/pub/databases/microarray/data/atlas/experiments/',experiment,'/',experiment,'-atlasExperimentSummary.Rdata') %>% download.file(destfile = paste0(destdir,"/",experiment,".Rdata"))
   }
   destdir %>% load_experiments
 }
