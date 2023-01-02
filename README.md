@@ -57,9 +57,8 @@ library(Biobase)
 library(SelectBCM)
 ```
 
-## Loading data in R
+## Loading local data in R
 If the data files are already on user's local machine, then the data can be directly used-
-
 
 **Steps:**
 
@@ -80,15 +79,15 @@ If you want to use data from Expression Atlas that can be downloaded in `.Rdata`
 ```r
 experiments <- download_experiments_from_ExpressionAtlas('E-MTAB-8549','E-MTAB-5060')
 *** will download RNAseq experiments from expressionatlas.
-
-
-**Recommendation:** Microarray input data should be preprocessed- appropriately back-ground corrected without any normalization step, probe-to-gene level mapped and log-transformed. It is also recommended to remove low-expressed genes from data if possible. For bulk-RNaseq data, it should be a count matrix.
-
-
 ```
 
-This downloads the experiments in a new directory called **"experiments"** in your working directory and loads all the experiments in R within a list, using `load_experiments` function.
-After having loaded the experiments, you will get a list of either `SummarizedExperiment` or list of `ExpressionSet` objects.
+**Recommendation:** 
+Microarray input data should be preprocessed- appropriately back-ground corrected without any normalization step, probe-to-gene level mapped and log-transformed. It is also recommended to remove low-expressed genes from data if possible. For bulk-RNaseq data, it should be a count matrix.
+
+
+
+This downloads the experiments in a new directory called **"experiments"** in user's working directory and loads all the experiments in R within a list, using `load_experiments` function.
+After having loaded the experiments, user will get a list of either `SummarizedExperiment` or list of `ExpressionSet` objects.
 
 **Caution**: Avoid mixing experiments of `SummarizedExperiment` with `ExpressionSet`. Experiments can only belong from any one of the classes only. All the selected experiments should have same gene id format.
 
