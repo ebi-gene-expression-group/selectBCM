@@ -133,7 +133,7 @@ experiments %<>% merge_experiment.SummarizedExperiment()
 **Caution:** Sometimes during merging experiment, phenodata (SDRF) file gets corrupted, hence, it is advised to always check meta-data before proceeding further.
 
 
-## Correcting batch effect
+## Step4: Correcting batch effect
 The function `batch_correction` performs various methods of batch-correction on a given merged dataset and output batch-corrected data as a list.
 
 Short detail of methods implemented in `batch_correction` function are given below-
@@ -171,18 +171,40 @@ This function has following arguments-
 * The `filter` argument specifies the gene label for the given dataset. It Should be one of the following string- 'symbol', 'ensembl_gene_id' or 'entrezgene_id' depending on the gene label for the given dataset.
 
 
-Since, this merged dataset had some issues while merging, phenodata was added separately. Phenodata is also available with the package in `data` folder and can be accessed like this: 
-
+`batch effect` present in the example study can be detected like this:
 ```r
-load("~/SelectBCM/data/pheno.example1.Rdata")
-experiments <- ExpressionSet(exprs(experiments), phenoData=pheno.experiment1)
 
-``` 
+dds_final <- DESeqDataSetFromMatrix(countData = assay(experiments  ),
+                                    colData = colData(experiments), design = ~sex)
 
-After assigning phenodata, batch correction can be performed like this:
-```r
-result <- batch_correction(experiment= experiments,model=~Disease, batch = "batch",filter='symbol')
-``` 
+####check batch effect in the initial dataset:
+
+vst3 <- varianceStabilizingTransformation(dds_final)
+
+plotPCA(vst3,"batch")
+
+dds_final <- estimateSizeFactors(dds_final)
+se <- SummarizedExperiment(log2(counts(dds_final, normalized=TRUE) + 1),
+                           colData=colData(experiment.meta))
+# the call to DESeqTransform() is needed to trigger our plotPCA method.
+plotPCA( DESeqTransform( se ),intgroup =c("batch") )
+
+```
+
+![Figure3.](/data/detect_batcheffect.png)
+
+
+
+
+
+
+####Batch_correction using SelectBCM package
+
+result.1 <- batch_correction(dds_final,model=~sex, batch = "batch")
+result.1$data.uncorrected <- se
+result.1$data.uncorrected1 <- vst3
+
+ 
 Result is the list of batch-corrected data:
 ```r
 > summary(result)
