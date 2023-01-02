@@ -50,11 +50,19 @@ Sometime loading of 'magrittr','purrr' and 'dplyr' with `SelectBCM` package  is 
 **Recommendation:** Computation of scBatch requires high memory allocation for Rcpp, therefore it is advised to increase R memory.
 
 ```r
-library(magrittr)
-library(purrr)
-library(dplyr)
-library(Biobase)
+library(DESeq2)
 library(SelectBCM)
+library(magrittr)
+library(dplyr)
+library(purrr)
+library(tibble)
+library(gtools)
+library(readr)
+library(Biobase)
+
+library(ggplot2)
+library(scales)
+library(ggpubr)
 ```
 
 ## Step1: Getting data
@@ -80,30 +88,32 @@ In case of data downloading from Expression Atlas, user can use the function `do
 
 ```r
 experiments <- download_experiments_from_ExpressionAtlas('E-MTAB-8549','E-MTAB-5060')
-*** will download RNAseq experiments from expressionatlas.
 ```
+*** will download RNAseq experiments from expressionatlas.
 
 **Recommendation:** 
 Microarray input data should be preprocessed- appropriately back-ground corrected without any normalization step, probe-to-gene level mapped and log-transformed. It is also recommended to remove low-expressed genes from data if possible. For bulk-RNaseq data, it should be a count matrix.
 
 
-**Otput from step 1:**
+**Output from step 1:**
 This downloads the experiments in a new directory called **"experiments"** in user's working directory and loads all the experiments in R within a list, using `load_experiments` function.
 After having loaded the experiments, user will get a list of either `SummarizedExperiment` or list of `ExpressionSet` objects.
 
 **Caution**: Avoid mixing experiments of `SummarizedExperiment` with `ExpressionSet`. Experiments can only belong from any one of the classes only. All the selected experiments should have same gene id format.
 
 
-## Removing the isolated experiments
-To correct the `batch effect`, one needs to take the biological characteristics of the samples into account (`Tissue` in our example). If no sample of an experiment shares biological characteristics with samples from other batches, it is not possible to correct batch effect with these batches because one cannot distinguish the biological difference from the artifact. The function `remove_isolated_experiments` removes the isolated experiments and plots graphs of intersections between the experiments before and after removal.
+## Step2: Removing the isolated experiments
+To correct the `batch effect`, one needs to take the biological characteristics of the samples into account (`gender` in our example). If no sample of an experiment shares biological characteristics with samples from other batches, it is not possible to correct batch effect with these batches because one cannot distinguish the biological difference from the artifact. The function `remove_isolated_experiments` removes the isolated experiments and plots graphs of intersections between the experiments before and after removal.
 
 ```r
-experiments %<>% remove_isolated_experiments('organism')
+experiments %<>% remove_isolated_experiments('sex')
 ```
 
 **WARNING:** this function only removes the isolated experiment. Although it is still possible that two or more unconnected groups of experiments remain, within which the experiments are connected. In this case, batch effect correction is not possible and one will have to choose a group of experiments manually.
 
-The two following plots are displayed by the function. The first one shows the graph of intersections of all the experiments before the removal of isolated ones. The second shows the same graph after their removal.
+The two following plots are displayed by the function. The first one shows the graph of intersections of all the experiments before the removal of isolated ones. The second shows the same graph after their removal (Figure2).
+
+![Figure2. Graph showing connected set of experiments.](/data/Merge_experiment.png)
 
 ## Merging experiments in a single dataset
 The function `merge_experiments` merges all the experiments in the list in a single `SummarizedExperiment` or `ExpressionSet` object and doesn't perform any correction. This function has two additional arguments `log` and `filter` (respectively set to `TRUE` and `FALSE` by default).
