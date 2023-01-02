@@ -118,8 +118,8 @@ The two following plots are displayed by the function. The first one shows the g
 ## Step3: Merging experiments in a single dataset
 The function `merge_experiments` merges all the experiments in the list in a single `SummarizedExperiment` or `ExpressionSet` object and doesn't perform any correction. This function has two additional arguments `log` and `filter` (respectively set to `TRUE` and `FALSE` by default).
 
-* For RNAseq experiments: users have to call 'merge_experiment.SummarizedExperiment()' function.
-* For microarray experiment, users have to call 'merge_experiment.ExpressionSet()' function.
+* For RNAseq experiments: users have to call `merge_experiment.SummarizedExperiment()` function.
+* For microarray experiment, users have to call `merge_experiment.ExpressionSet()` function.
 *  The `log` argument determines whether to perform log transformation on the data (recommended for bulk RNAseq).
 *  The `filter` argument determines whether to filter genes for which all the samples of a batch have zero-counts. Set it to `TRUE` if user have issues in running ComBat at the next step.
 
