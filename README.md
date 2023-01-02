@@ -40,9 +40,9 @@ User can download the package as `zip` archive and install it via
 install.packages('SelectBCM.zip', repos = NULL, type = 'source')
 ```
 # Overview of steps available in SelectBCM
-SelectBCM package has several steps ranging from meta-experiment creation to batch-effect evaluation step (`Figure1`). In the current wrapper, scripts are written in a user-friendly way. Short description of each step and example is given below -
+SelectBCM package has several steps ranging from meta-experiment creation to batch-effect evaluation step. In the current wrapper, scripts are written in a user-friendly way. Short description of each step and example is given below -
 
-![Workflow of the SelectBCM package.](/data/Figure1.jpg)
+
 
 ## loading library
 Sometime loading of 'magrittr','purrr' and 'dplyr' with `SelectBCM` package  is deprecated, therefore, it is recommended to load all of these together.
@@ -223,7 +223,6 @@ data.uncorrected1    31686  DESeqTransform       S4
 
 The function `batch_evaluation` allows users to performs various evaluations on batch-corrected data and output performance list of each method. Since there are no. of ways batch-correction can be evaluated and each method has some limitation, we have used a cocktail of methods to perform analysis. This function has both PCA-inspired as well as biology inspired qualitative assessment protocol for batch-correction.
 
-![Overview of implemented assessment methods.](/data/Figure2_eval.jpg)
 
 Short detail of methods implemented in `batch_evaluation` function is given below-
 
