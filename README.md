@@ -27,7 +27,6 @@ Additinally, we also provide container image of the SelectBCM for direct install
 
 For traditional approach, we provide renv.lock for the required package installation and later SelectBCM can be installed via github-
 
-```
 ```R
 
 install_github('https://github.com/ebi-gene-expression-group/selectBCM')

@@ -1,0 +1,224 @@
+---
+title: "Rheumatoid arthritis meta-analysis - Batch effect correction"
+author: "Madhulika Mishra, Lucas Barck, Pablo Moreno, Guillaume Heger, Yuyao Song, Janet M. Thornton, Irene Papatheodorou"
+
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 4
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Introduction
+In this workflow, I want to perform the batch effect correction on datasets that Madhulika Mishra and I selected for our meta-analysis on osteoarthritis:
+
+* **E-GEOD-1919**: 5x control; 5x OA
+* **E-GEOD-55235**: 10x control; 10x OA
+* **E-MTAB-5564**: 10x control; 14x OA
+* **E-GEOD-51588**: 10x control; 40x OA
+
+## Batch effect correction
+#### Import of the packages and datasets
+
+```{r}
+# Loading the packages
+library(magrittr)
+library(purrr)
+library(dplyr)
+library(SelectBCM)
+library(Biobase)
+library(matrixStats)
+library(S4Vectors)
+library(ComplexHeatmap)
+library(tictoc)
+library(tidyverse)
+
+# Loading the experiments as ExpressionSet or SummarizedExperiment (folder is only allowed to contain .RData files)
+experiments <- load_experiments('/Users/lucasbarck/Desktop/EMBL_EBI/Lucas_Barck_summer_internship_2021/4_OA_meta_analysis/output/Preprocessing/unnormalized data')
+```
+
+#### Check-up of pData
+```{r}
+unique(pData(experiments$E_GEOD_51588_eset_bgc.RData)$disease)
+unique(pData(experiments$E_GEOD_1919_eset_bgc.RData)$disease)
+unique(pData(experiments$E_GEOD_55235_eset_bgc.RData)$disease)
+unique(pData(experiments$E_MTAB_5564_eset_bgc.RData)$disease)
+```
+
+#### Removement of isolated experiments
+```{r}
+experiments %<>% remove_isolated_experiments('disease')
+
+sapply(experiments,dim)
+
+sep_experiments <- experiments
+```
+Note that the feature numbers range from 8604 to 20744.
+
+#### UpSet plot
+The UpSet plot is a very intuitive way to estimate the gene overlap between different chips. Here, I will use it to analyse the compatibility of the different chips.
+```{r}
+listInput <- sapply(sep_experiments, featureNames)
+combination_matrix <- make_comb_mat(listInput, mode = "intersect")
+combination_matrix <- combination_matrix[comb_degree(combination_matrix) >= 3]
+ComplexHeatmap::UpSet(combination_matrix, 
+                      comb_col = "black",
+                      pt_size = unit(2.5, "mm"), lwd = 2,
+                      bg_col = "#F0F0F0", bg_pt_col = "#CCCCCC",
+                      row_names_side = "left",
+                      row_names_gp = grid::gpar(fontsize = 8),
+                      comb_order = order(comb_size(combination_matrix), decreasing = TRUE),
+                      
+                      top_annotation = HeatmapAnnotation(
+                      degree = as.character(comb_degree(combination_matrix)),
+                      "Intersection\nsize" = anno_barplot(comb_size(combination_matrix), 
+                      border = FALSE, 
+                      gp = gpar(fill = "darkgrey"), 
+                      height = unit(2, "cm")), 
+                      annotation_name_side = "left", 
+                      annotation_name_rot = 0),
+                      
+                      
+                      right_annotation = upset_right_annotation(combination_matrix, 
+                      ylim = c(0, 22000),
+                      gp = gpar(fill = "darkgrey"),
+                      annotation_name_side = "bottom",
+                      axis_param = list(side = "bottom"))
+                      )
+
+sapply(sep_experiments,dim)
+```
+The UpSet plot shows that the maximum number of gene overlap is achieved by excluding E-GEOD-1919. The reason for that is the comparably small number of total genes in the first place (8604). \
+However, the gene overlap between all four datasets is arguably very good. Therefore, I will keep every dataset.
+
+
+#### Merging experiments in a single dataset
+```{r}
+experiments %<>% merge_experiment.ExpressionSet(log = FALSE)
+dim(experiments)
+```
+The merge_experiments function reduced the number of features to 7926. <br/><br/>
+
+There are still rheumatoid arthritis samples in the data frame. These samples need to be excluded since this meta analysis focuses on the difference between normal and osteoarthritis.
+
+```{r}
+# Isolating control and OA samples
+unique(pData(experiments)$disease)
+filter <- colnames(experiments)[pData(experiments)$disease != "rheumatoid arthritis"]
+experiments <- experiments[, filter]
+table(pData(experiments)$disease)
+dim(experiments)
+
+pData(experiments) %>% select(disease, batch) %>% group_by(batch) %>% table()
+```
+
+```{r}
+# Export of the merged file
+save(experiments, file="osteoarthritis_merged_datasets.RData")
+```
+
+
+#### Batch effect detection
+```{r}
+batch_effect.raw <- detect_effect(experiments,experiment = experiments, batch.factors=c("batch","disease"),10,10,'entrezgene_id')
+Result <- do.call(rbind, lapply(batch_effect.raw, data.frame))
+Result
+```
+These results indicate that there is a strong batch effect present in the data.
+
+
+#### Batch effect correction
+```{r}
+fData(experiments)$entrezgene_id <- rownames(fData(experiments))
+
+tic("batch_correction")
+result <- batch_correction(experiment= experiments,model=~disease, batch = "batch",filter='entrezgene_id')
+toc()
+summary(result)
+
+OA_batch_res_with_NAs <- result
+
+```
+
+
+#### Assessment of batch-correction methods
+Some batch effect correction methods created NAs in the data. This issue causes `batch_evaluation()` to fail, and is also problematic for later analysis. Therefore, it is necessary to identify the respective datasets and substitute the NAs with "0".
+```{r}
+# Identify affected datasets
+for(i in 1:length(result)){
+  print(names(result)[i])
+  print(all(is.finite(exprs(result[[i]]))))
+}
+```
+These methods that produced NAs are: data.quantile, Q_ComBat, data.Q_naiveRandRUV_HK, and data.Q_naiveRandRUV_empi.controls.
+
+```{r}
+# Substitute NAs
+exprs(result$data.Q_naiveRandRUV_HK)[is.na(exprs(result$data.Q_naiveRandRUV_HK))] <- 0
+exprs(result$data.Q_naiveRandRUV_empi.controls)[is.na(exprs(result$data.Q_naiveRandRUV_empi.controls))] <- 0
+exprs(result$data.quantile)[is.na(exprs(result$data.quantile))] <- 0
+exprs(result$data.Q_ComBat)[is.na(exprs(result$data.Q_ComBat))] <- 0
+
+osteoarthritis_batch_result <- result
+save(osteoarthritis_batch_result, file="osteoarthritis_batch_cor_result.RData")
+```
+
+
+Since the gender information is not available for every experiment, the column should be removed before the batch effect correction evaluation.
+```{r}
+# Remove gender column
+for (i in 1:length(result)){
+  pData(result[[i]]) <- pData(result[[i]]) %>% select(-sex) %>% select(-FactorValue..SEX.)
+}
+
+pData(experiments) <- pData(experiments) %>% select(-sex) %>% select(-FactorValue..SEX.)
+```
+
+
+```{r}
+# Batch effect correction evaluation
+assessment <- SelectBCM::batch_evaluation.microarray(result, batch.factors=c("batch","disease"), experiments,10,10,filter='entrezgene_id')
+assessment
+
+final <- diagnostic_matrix.microarray(assessment)
+
+dia_plot <-  SelectBCM::diagnostic_plot.microarray(final)
+
+svg("Diagnostic_plot_OA_example.svg")
+
+ggarrange(dia_plot$diagnostic_plot,dia_plot$diagnostic_stat_summary,
+          labels = c("a.", "b."),
+          legend = "right", ncol = 1, nrow = 2
+)
+
+dev.off()
+
+
+bcm_ranking(final)
+```
+
+Therefore, the top performing batch effect correction methods are:
+
+1) ComBat2
+2) Q_ComBat
+3) ComBat1
+
+
+# Exporting R session and session info
+```{r}
+# Saving the R session
+save.image(file = "osteoarthritis_batch_cor_session.RData")
+```
+
+
+<details>
+<summary>
+**See for session info**
+</summary>
+```{r}
+sessionInfo()
+```
+</details>
