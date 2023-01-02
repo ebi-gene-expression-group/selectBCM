@@ -15,10 +15,10 @@
 #' @import GGally
 #' @importFrom hrbrthemes theme_ipsum
 #' @importFrom colorspace divergingx_hcl
-#' @name diagnostic.microarray
+#' @name diagnostic_matrix.microarray
 
 #' @export
-diagnostic.microarray <- function(evaluation)
+diagnostic_matrix.microarray <- function(evaluation)
 
 {
   minus <- function(x, na.rm = FALSE) (-x)
@@ -33,31 +33,6 @@ diagnostic.microarray <- function(evaluation)
   w3_m <- w3_m %>% mutate(sumRank = rowSums(.)) %>% mutate(across(c("sumRank"), dense_rank))
   row.names(w3_m) <- rownames(w_m)
   w3_m$method <- row.names(w3_m)
-
-  p_ <- GGally::print_if_interactive
-
-  svg("Diagnostic_plot.svg")
-
-  parallelCoordinatePlot <-
-    ggparcoord(data=w3_m, columns=1:6, groupColumn = "method",
-               scale = "globalminmax",
-               showPoints = TRUE,
-               alphaLines = 1,splineFactor=10
-    )  + scale_y_reverse()+scale_color_manual(values=mycolors)+
-    theme_ipsum()+
-    xlab("Evaluation method") +
-    ylab( "Rank" ) +
-    theme(legend.position="top") + theme(text = element_text(family = "Times New Roman"))+
-    theme(axis.text.x = element_text(size=10, face="bold", color = "black"),
-          axis.text.y = element_text(size=10, face="bold", color = "black"),
-          legend.title=element_text(size=14, face="bold", color = "black"))
-
-
-
-  p_(parallelCoordinatePlot)
-
-  dev.off()
-
 
   Rank <- list()
   Rank$raw <- w_m

@@ -224,8 +224,8 @@ data.uncorrected1    31686  DESeqTransform       S4
 The `batch_evaluation` allows users to performs various evaluations on batch-corrected data and output performance list of each method. Since there are no. of ways batch-correction can be evaluated and each method has some limitation, we have used a cocktail of methods to perform analysis. This function has both PCA-inspired as well as biology inspired qualitative assessment protocol for batch-correction.
 
 
-* For RNAseq experiments:* users have to call `batch_evaluation.RNAseq()` function.
-* For microarray experiment:* users have to call `batch_evaluation.microarray()` function.
+* For RNAseq experiments: users have to call `batch_evaluation.RNAseq()` function.
+* For microarray experiment: users have to call `batch_evaluation.microarray()` function.
 
 
 Short detail of methods implemented in `batch_evaluation` function is given below-
@@ -256,8 +256,19 @@ assess.RNAseq <- batch_evaluation.RNAseq(result.1, batch.factors=c("batch","sex"
 
 
 ## Step6: Ranking of BCMs
-Once, assessment is performed, in next step, results obtained from the `batch_evaluation` step can be further analyszed using
-`Rank.plot` function which performs ranking and plotting of evaluation data obtained at the previous step. Here, methods are ranked on their performance and finally `sumRank` is the final Rank of each method for the given input dataset. Rank 1 will be the best performer method.
+
+Once, assessment is performed, in next step, results obtained from the `batch_evaluation` step, ranking of BCM is the two step analysis-
+
+* Generation of Diagnostic matrix
+* Plot of Ranks of BCM obatined from Diagnostic matrix
+
+**Diagnostic matrix**
+
+`diagnostic_matrix.RNAseq` function performs ranking of evaluation data obtained at the previous step. Here, methods are ranked on their performance and finally `sumRank` is the final Rank of each method for the given input dataset. Rank 1 will be the best performer method.
+
+* For RNAseq experiments: users have to call `diagnostic_matrix.RNAseq` function.
+* For microarray experiment: users have to call `diagnostic_matrix.microarray` function.
+
 
 This function has only one argument- 
 
@@ -265,11 +276,26 @@ This function has only one argument-
 
 
 ```r
- final <- bcm_ranking(assessment)
+final <- SelectBCM::diagnostic_matrix.RNAseq(assess.RNAseq)
 ``` 
-**final** is a list of two data-frame- (a) raw - simple data-frame output of evaluation matrix and, (b) ranked- Ranked data-frame of evaluation matrix which has additional column `sumRank` containing final Rank of each method. Ranks are in descending performance order, i.e. the method having score 1 will be the best method. This function also outputs a `diagnostic plot`, where x-axis is the evaluation protocol and y-axis is the Rank of each batch-correction method.
+**Output:** A list of two data-frame- (a) raw - simple data-frame output of evaluation matrix and, (b) ranked- Ranked data-frame of evaluation matrix which has additional column `sumRank` containing final Rank of each method. Ranks are in descending performance order, i.e. the method having score 1 will be the best method. 
 
-![Diagnostic plot.](/data/Diagnostic_plot.svg)
+```r
+dia_plot <-  SelectBCM::diagnostic_plot.RNAseq(final)
+
+svg("Diagnostic_plot_RNAseq_example.svg")
+
+ggarrange(dia_plot$diagnostic_plot,dia_plot$diagnostic_stat_summary,
+          labels = c("a.", "b."),
+          legend = "right", ncol = 1, nrow = 2
+)
+
+dev.off()
+
+``` 
+This function also outputs a `diagnostic plot`, where x-axis is the evaluation protocol and y-axis is the Rank of each batch-correction method.
+
+![Diagnostic plot.](/data/Diagnostic_plot_RNAseq_example.svg)
 
 
 
