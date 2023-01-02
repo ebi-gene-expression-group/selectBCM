@@ -1,5 +1,5 @@
 # SelectBCM wrapper: Short introduction
-"Madhulika Mishra, Lucas Barck, Pablo Moreno, Guillaume Heger, Janet M. Thornton, Irene Papatheodorou"
+"Madhulika Mishra, Lucas Barck, Pablo Moreno, Guillaume Heger,Yuyao Song, Janet M. Thornton, Irene Papatheodorou"
 
 
 # Introduction
@@ -27,20 +27,14 @@ Additinally, we also provide container image of the SelectBCM for direct install
 
 For traditional approach, we provide renv.lock for the required package installation and later SelectBCM can be installed via github-
 
-##If you want to install the package directly from Github, I recommend using the `devtools` ##package. Package uses r-base=3.6.3, therefore it is advised to initiate conda environment ##with r-base=3.6.3. Wrapper uses "foreign"  package as dependency which is no more ##supported by cran, therefore it should be installed via conda before hand. 
-
-```
-##conda create -p ./venv  -c conda-forge r-base=3.6.3
-## conda install -c conda-forge r-foreign
 ```
 ```R
 
  install_github('https://github.com/ebi-gene-expression-group/selectBCM')
 ```
 
-
 or 
-##Please download the package as `zip` archive and install it via
+User can download the package as `zip` archive and install it via
 
 ```R
 ##install.packages('SelectBCM.zip', repos = NULL, type = 'source')
