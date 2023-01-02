@@ -221,7 +221,11 @@ data.uncorrected1    31686  DESeqTransform       S4
 
 ## Step5:  Assessment of batch-correction methods
 
-The function `batch_evaluation` allows users to performs various evaluations on batch-corrected data and output performance list of each method. Since there are no. of ways batch-correction can be evaluated and each method has some limitation, we have used a cocktail of methods to perform analysis. This function has both PCA-inspired as well as biology inspired qualitative assessment protocol for batch-correction.
+The `batch_evaluation` allows users to performs various evaluations on batch-corrected data and output performance list of each method. Since there are no. of ways batch-correction can be evaluated and each method has some limitation, we have used a cocktail of methods to perform analysis. This function has both PCA-inspired as well as biology inspired qualitative assessment protocol for batch-correction.
+
+
+* For RNAseq experiments:* users have to call `batch_evaluation.RNAseq()` function.
+* For microarray experiment:* users have to call `batch_evaluation.microarray()` function.
 
 
 Short detail of methods implemented in `batch_evaluation` function is given below-
@@ -244,16 +248,14 @@ This function has following arguments-
 
 Assessment of batch-corrected data can be performed like this:
 ```r
-assessment <- batch_evaluation(result, batch.factors=c("batch","sex"), experiments,10,10,filter='symbol')
+assess.RNAseq <- batch_evaluation.RNAseq(result.1, batch.factors=c("batch","sex"),
+                                         se,5,5,'ensembl_gene_id')
+
 ``` 
-assessment is a nested list of evaluation scores for each of the evaluation protocols.
+*Output:* assess.RNAseq is a nested list of evaluation scores for each of the evaluation protocols.
 
 
-### Interpretation of result of evaluation protocols
-The following table explains how results from each evaluation protocol should be interpreted. PVCA, silhouette index and PcRegression measures residual `batch-effect` in corrected data, therefore for these measurements lower the score, better the performance will be. HVG (HVG.union & HVG.inersection) measures inherent biological heterogeneity, therefore higher the score, better will be method. Entropy measures entropy of batch-mixing, therefore; higher the score better the method is.
-
-
-## Diagnostic plot
+## Step6: Ranking of BCMs
 Once, assessment is performed, in next step, results obtained from the `batch_evaluation` step can be further analyszed using
 `Rank.plot` function which performs ranking and plotting of evaluation data obtained at the previous step. Here, methods are ranked on their performance and finally `sumRank` is the final Rank of each method for the given input dataset. Rank 1 will be the best performer method.
 
