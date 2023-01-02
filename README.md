@@ -219,12 +219,11 @@ data.uncorrected     31686  SummarizedExperiment S4
 data.uncorrected1    31686  DESeqTransform       S4 
 ```
 
-## Assessment of batch-correction methods
+## Step5:  Assessment of batch-correction methods
 
-The function `batch_evaluation` performs various evaluations on batch-corrected data and output performance list of each method. Since there are no. of ways batch-correction can be evaluated and each method has some limitation, we have used a cocktail of methods to perform analysis. This function has both PCA-inspired as well as biology
-inspired qualitative assessment protocol for batch-correction.
+The function `batch_evaluation` allows users to performs various evaluations on batch-corrected data and output performance list of each method. Since there are no. of ways batch-correction can be evaluated and each method has some limitation, we have used a cocktail of methods to perform analysis. This function has both PCA-inspired as well as biology inspired qualitative assessment protocol for batch-correction.
 
-![Overview of implemented assessment methods.](/data/figure2.png)
+![Overview of implemented assessment methods.](/data/Figure2_eval.jpg)
 
 Short detail of methods implemented in `batch_evaluation` function is given below-
 
