@@ -2,7 +2,7 @@ Package: SelectBCM
 Type: Package
 Title: Toolkit for batch correction
 Version: 0.1.0
-Author: "Madhulika Mishra, Lucas Barck, Pablo Moreno, Guillaume Heger, Irene Papatheodorou, Janet M. Thornton"
+Author: "Madhulika Mishra, Lucas Barck, Pablo Moreno, Guillaume Heger, Yuyao Song, Janet M. Thornton, Irene Papatheodorou"
 Maintainer: The package maintainer <madhulika@ebi.ac.uk>
 Description: R package for batch evaluation and correction in gene-expression datasets
 License: GPL-3
