@@ -278,7 +278,14 @@ This function has only one argument-
 ```r
 final <- SelectBCM::diagnostic_matrix.RNAseq(assess.RNAseq)
 ``` 
-**Output:** A list of two data-frame- (a) raw - simple data-frame output of evaluation matrix and, (b) ranked- Ranked data-frame of evaluation matrix which has additional column `sumRank` containing final Rank of each method. Ranks are in descending performance order, i.e. the method having score 1 will be the best method. 
+**Output1:** A list of two data-frame- (a) raw - simple data-frame output of evaluation matrix and, (b) ranked- Ranked data-frame of evaluation matrix which has additional column `sumRank` containing final Rank of each method. Ranks are in descending performance order, i.e. the method having score 1 will be the best method. 
+
+**diagnostic_plot**
+
+Using output1, selectBCM provides-
+
+a) Diagnostic plot showing the performance of BCMs across evaluation methods, where x-axis is the evaluation protocol and y-axis is the Rank of each batch-correction method.
+b) violin plot to summarise the performance of BCMs
 
 ```r
 dia_plot <-  SelectBCM::diagnostic_plot.RNAseq(final)
@@ -293,10 +300,10 @@ ggarrange(dia_plot$diagnostic_plot,dia_plot$diagnostic_stat_summary,
 dev.off()
 
 ``` 
-This function also outputs a `diagnostic plot`, where x-axis is the evaluation protocol and y-axis is the Rank of each batch-correction method.
 
 ![Diagnostic plot.](/data/Diagnostic_plot_RNAseq_example.svg)
 
+and the final rank plot of BCMs where the 1st rank represents the most appropriate BCM for the given set of experiments
 
 
 # Accessory function
