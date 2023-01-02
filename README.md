@@ -75,7 +75,7 @@ experiments<-load_experiments('./')
 
 If user want to download data from Expression Atlas, they can skip this part and go directly to "Downloading data from Expression Atlas".
 
-## Downloading data from Expression Atlas
+**Downloading data from Expression Atlas:**
 In case of data downloading from Expression Atlas, user can use the function `download_experiments_from_ExpressionAtlas` in this way :
 
 ```r
