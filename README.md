@@ -185,7 +185,7 @@ plotPCA(vst3,"batch")
 
 dds_final <- estimateSizeFactors(dds_final)
 se <- SummarizedExperiment(log2(counts(dds_final, normalized=TRUE) + 1),
-                           colData=colData(experiment.meta))
+                           colData=colData(experiments))
 # the call to DESeqTransform() is needed to trigger our plotPCA method.
 plotPCA( DESeqTransform( se ),intgroup =c("batch") )
 
@@ -193,33 +193,30 @@ plotPCA( DESeqTransform( se ),intgroup =c("batch") )
 
 ![Figure3.](/data/detect_batcheffect.png)
 
+**Batch_correction using SelectBCM tool:**
 
-
-
-
-
-####Batch_correction using SelectBCM package
+```r
 
 result.1 <- batch_correction(dds_final,model=~sex, batch = "batch")
 result.1$data.uncorrected <- se
 result.1$data.uncorrected1 <- vst3
 
+```
  
-Result is the list of batch-corrected data:
+*Output:*  is the list of batch-corrected data:
 ```r
-> summary(result)
-                                  Length Class         Mode
-data.limma                        1      ExpressionSet S4  
-data.GFS                          1      ExpressionSet S4  
-data.quantile                     1      ExpressionSet S4  
-data.ComBat1                      1      ExpressionSet S4  
-data.ComBat2                      1      ExpressionSet S4  
-data.Q_ComBat                     1      ExpressionSet S4  
-data.mnncorrect                   1      ExpressionSet S4  
-data.Q_naiveRandRUV_HK            1      ExpressionSet S4  
-data.naiveRandRUV_HK              1      ExpressionSet S4  
-data.naiveRandRUV_empi.controls   1      ExpressionSet S4  
-data.Q_naiveRandRUV_empi.controls 1      ExpressionSet S4 
+summary(result.1)
+
+                     Length Class                Mode
+data.limma           31686  SummarizedExperiment S4  
+data.ComBat          31686  SummarizedExperiment S4  
+data.ComBat_Seq_full 31686  SummarizedExperiment S4  
+data.ComBat_seq_null 31686  SummarizedExperiment S4  
+data.MNN             31686  SummarizedExperiment S4  
+data.RUVs            31686  SummarizedExperiment S4  
+data.scBatch         31686  SummarizedExperiment S4  
+data.uncorrected     31686  SummarizedExperiment S4  
+data.uncorrected1    31686  DESeqTransform       S4 
 ```
 
 ## Assessment of batch-correction methods
