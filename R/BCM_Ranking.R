@@ -3,7 +3,9 @@
 #' @import ggplot2
 #' @importFrom hrbrthemes theme_ipsum
 #' @importFrom colorspace divergingx_hcl
-#'
+
+#' @param  diagnostic_matirx  diagnostic_matirx obtained from the previous step `diagnostic_matrix.microarray`.
+
 #' @name bcm_ranking
 
 #' @export

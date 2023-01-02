@@ -6,6 +6,9 @@
 \usage{
 bcm_ranking(rank_data)
 }
+\arguments{
+\item{diagnostic_matirx}{diagnostic_matirx obtained from the previous step `diagnostic_matrix.microarray`.}
+}
 \description{
 Rank plot of batch-correction methods provided by SelectBCM tool
 }

@@ -12,8 +12,7 @@ diagnostic_matrix.microarray(evaluation)
 \value{
 A list of two data-frame- (a) raw - simple data-frame output of evaluation matrix and, (b) ranked-
 Ranked data-frame of evaluation matrix which has additional column `sumRank` containing final Rank of each method.
-Ranks are in descending performance order, i.e. method having score 1 will be the best method. This function also output
-`diagnostic plot`, where the x-axis is the evaluation methods and the y-axis is the Rank of each normalization method.
+Ranks are in descending performance order, i.e. method having score 1 will be the best method.
 }
 \description{
 The function performs ranking and plotting of the evaluation data obtained at
