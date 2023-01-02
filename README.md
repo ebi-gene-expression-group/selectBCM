@@ -30,19 +30,19 @@ For traditional approach, we provide renv.lock for the required package installa
 ```
 ```R
 
- install_github('https://github.com/ebi-gene-expression-group/selectBCM')
+install_github('https://github.com/ebi-gene-expression-group/selectBCM')
 ```
 
 or 
 User can download the package as `zip` archive and install it via
 
 ```R
-##install.packages('SelectBCM.zip', repos = NULL, type = 'source')
+install.packages('SelectBCM.zip', repos = NULL, type = 'source')
 ```
 # Overview of steps available in SelectBCM
 SelectBCM package has several steps ranging from meta-experiment creation to batch-effect evaluation step (`Figure1`). In the current wrapper, scripts are written in a user-friendly way. Short description of each step and example is given below -
 
-![Workflow of the SelectBCM package.](/data/figure1.png)
+![Workflow of the SelectBCM package.](/data/Figure1.jpg)
 
 ## loading library
 Sometime loading of 'magrittr','purrr' and 'dplyr' with `SelectBCM` package  is deprecated, therefore, it is recommended to load all of these together.
