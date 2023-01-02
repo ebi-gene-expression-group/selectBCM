@@ -316,7 +316,7 @@ A bar plot representation of the BCMs where the 1st rank represents the most app
 ```r
 bcm_ranking(final)
 ``` 
-![Diagnostic plot.](/data/Ranking_plot.svg)
+![Diagnostic plot.](/data/Ranking_plot.png)
 
 # Accessory function
 ## Detetction of batch-effects in raw merged dataset
