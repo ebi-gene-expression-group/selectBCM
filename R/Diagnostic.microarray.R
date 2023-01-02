@@ -23,7 +23,7 @@ diagnostic_matrix.microarray <- function(evaluation)
 {
   minus <- function(x, na.rm = FALSE) (-x)
 
-  mycolors <- divergingx_hcl(11, palette = "Roma")
+
   evaluation <- evaluation
 
   w_m <- do.call(rbind, lapply(evaluation, as.matrix)) %>% t %>% as.data.frame()

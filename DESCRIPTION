@@ -60,6 +60,7 @@ Collate:
     'accessory.R'
     'batch_sil.R'
     'diagnostic_plot.RNAseq.R'
+    'diagnostic_plot.microarray.R'
     'entropy.R'
     'pcRegression.R'
     'evaluation_RNAseq.R'

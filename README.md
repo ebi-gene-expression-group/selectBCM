@@ -287,6 +287,12 @@ Using output1, selectBCM provides-
 a) Diagnostic plot showing the performance of BCMs across evaluation methods, where x-axis is the evaluation protocol and y-axis is the Rank of each batch-correction method.
 b) violin plot to summarise the performance of BCMs
 
+
+* For RNAseq experiments: users have to call `diagnostic_plot.RNAseq` function.
+* For microarray experiment: users have to call `diagnostic_plot.microarray` function.
+
+
+
 ```r
 dia_plot <-  SelectBCM::diagnostic_plot.RNAseq(final)
 
@@ -300,10 +306,10 @@ ggarrange(dia_plot$diagnostic_plot,dia_plot$diagnostic_stat_summary,
 dev.off()
 
 ``` 
-
 ![Diagnostic plot.](/data/Diagnostic_plot_RNAseq_example.svg)
 
-and the final rank plot of BCMs where the 1st rank represents the most appropriate BCM for the given set of experiments
+
+* The final rank plot of BCMs where the 1st rank represents the most appropriate BCM for the given set of experiments
 
 
 # Accessory function
