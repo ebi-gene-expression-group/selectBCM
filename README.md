@@ -309,8 +309,14 @@ dev.off()
 ![Diagnostic plot.](/data/Diagnostic_plot_RNAseq_example.svg)
 
 
-* The final rank plot of BCMs where the 1st rank represents the most appropriate BCM for the given set of experiments
+**Rank plot**
 
+A bar plot representation of the BCMs where the 1st rank represents the most appropriate BCM for the given set of experiments using sumRank score. 
+
+```r
+bcm_ranking(final)
+``` 
+![Diagnostic plot.](/data/Ranking_plot.svg)
 
 # Accessory function
 ## Detetction of batch-effects in raw merged dataset
