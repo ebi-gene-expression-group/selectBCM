@@ -58,9 +58,7 @@ library(SelectBCM)
 ```
 
 ## Loading data in R
-If the data files are already on your computer, you can use this step. If you want to download data from Expression Atlas, skip this part and go directly to "Downloading data from Expression Atlas".
-
-**Recommendation:** Microarray input data should be preprocessed- appropriately back-ground corrected without any normalization step, probe-to-gene level mapped and log-transformed. It is also recommended to remove low-expressed genes from data if possible. For bulk-RNaseq data, it should be count matrix .
+If the data files are already on user's local machine, then the data can be directly used-
 
 
 **Steps:**
@@ -71,8 +69,10 @@ If the data files are already on your computer, you can use this step. If you wa
 ```r
 experiments <- load_experiments('directory_path')
 experiments<-load_experiments('./')
+
 ```
-Example Microarray data is provided in **example1** folder of the package.
+
+If user want to download data from Expression Atlas, they can skip this part and go directly to "Downloading data from Expression Atlas".
 
 ## Downloading data from Expression Atlas
 If you want to use data from Expression Atlas that can be downloaded in `.Rdata` format, you can use the function `download_experiments_from_ExpressionAtlas` in this way :
@@ -80,6 +80,11 @@ If you want to use data from Expression Atlas that can be downloaded in `.Rdata`
 ```r
 experiments <- download_experiments_from_ExpressionAtlas('E-MTAB-8549','E-MTAB-5060')
 *** will download RNAseq experiments from expressionatlas.
+
+
+**Recommendation:** Microarray input data should be preprocessed- appropriately back-ground corrected without any normalization step, probe-to-gene level mapped and log-transformed. It is also recommended to remove low-expressed genes from data if possible. For bulk-RNaseq data, it should be a count matrix.
+
+
 ```
 
 This downloads the experiments in a new directory called **"experiments"** in your working directory and loads all the experiments in R within a list, using `load_experiments` function.
