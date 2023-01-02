@@ -100,7 +100,7 @@ SV <- if(is.null(k))  {
 
 empi.controls <- empirical.controls(edata,mod,mod0=NULL,n.sv=SV,type="norm")
 genes <-  as.character(row.names(edata))
-control.genes <- Batchevaluation::control.genes
+control.genes <- SelectBCM::control.genes
 
 control.genes <-     if(filter=='symbol'){
   control.genes <- as.array(control.genes$hgnc_symbol)

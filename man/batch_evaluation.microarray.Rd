@@ -3,6 +3,9 @@
 \name{batch_evaluation.microarray}
 \alias{batch_evaluation.microarray}
 \title{Assessment of batch-correction methods}
+\usage{
+batch_evaluation.microarray(result, batch.factors, experiment, N1, N2, filter)
+}
 \arguments{
 \item{result}{A list of wrapped batch-corrected experiments obtained from the last step ('batch_correction').}
 
@@ -19,10 +22,10 @@ which can be used to assess over-fitting should be provided.}
 depending on gene label for the given dataset.}
 }
 \value{
-A list of the evaluation methods on the batch-corrected experiment.
+A list of the evaluation methods on the batch-corrected microarray experiment.
 }
 \description{
-The function performs various evaluations on batch-corrected data and output
+The function performs various evaluations on batch-corrected microarray data and output
 performance list of each individual method. Since there are no. of ways batch-correction can
 be evaluated and each method has its own limitation, we have used a cocktail of methods to
 perform analysis.

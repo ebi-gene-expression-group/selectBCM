@@ -3,6 +3,9 @@
 \name{batch_evaluation.RNAseq}
 \alias{batch_evaluation.RNAseq}
 \title{Assessment of batch-correction methods for bulk RNAseq experiments}
+\usage{
+batch_evaluation.RNAseq(result, batch.factors, experiment, N1, N2, filter)
+}
 \arguments{
 \item{result}{A list of wrapped batch-corrected experiments obtained from the last step ('batch_correction').}
 
@@ -23,13 +26,9 @@ A list of the evaluation methods on the batch-corrected experiment.
 }
 \description{
 The function performs various evaluations on batch-corrected data and output
-performance list of each individual method. Since there are no. of ways batch-correction can
+performance list of each individual method. Since there are number of ways batch-correction can
 be evaluated and each method has its own limitation, we have used a cocktail of methods to
 perform analysis.
-}
-\note{
-Caution: If phenodata(SDRF) file doesn't contain sex/Gender/Sex/gender column, than gender-specific
-analysis will be skipped.
 }
 \examples{
  batch_evaluation(result, batch.factors=c("batch","sex"),experiments,'ensembl_gene_id')

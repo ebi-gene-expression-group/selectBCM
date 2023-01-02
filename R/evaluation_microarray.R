@@ -1,5 +1,5 @@
 #' Assessment of batch-correction methods
-#' @description  The function performs various evaluations on batch-corrected data and output
+#' @description  The function performs various evaluations on batch-corrected microarray data and output
 #' performance list of each individual method. Since there are no. of ways batch-correction can
 #' be evaluated and each method has its own limitation, we have used a cocktail of methods to
 #' perform analysis.
@@ -12,7 +12,7 @@
 #' @param filter A string. Should be one of following string- 'symbol', 'ensembl_gene_id', or 'entrezgene_id'
 #' depending on gene label for the given dataset.
 #' @examples  batch_evaluation(result, batch.factors=c("batch","sex"),experiments,'ensembl_gene_id')
-#' @return A list of the evaluation methods on the batch-corrected experiment.
+#' @return A list of the evaluation methods on the batch-corrected microarray experiment.
 
 
 #' @import lme4
@@ -33,7 +33,7 @@
 #' @include batch_sil.R
 
 #' @name batch_evaluation.microarray
-data(sex.genes, envir=environment())
+
 
 #' @export
 batch_evaluation.microarray <-function(result, batch.factors, experiment,N1,N2,filter)
@@ -72,8 +72,6 @@ batch_evaluation.microarray <-function(result, batch.factors, experiment,N1,N2,f
     BatchEntropy(pca.data(filename)$x[,1:2],
                  as.numeric(experiment[["batch"]]),L=100, M=N1, k=N2)} ## Default values for Entropy calculation
 
-  sex.silhouette <- function(filename) {
-    experiment.silhouette <- batch_sil(pca.data(filename), as.factor(experiment[["sex"]]))}
 
   expression.input <- if(experiment@class =="SummarizedExperiment") {
     map(result,  seq.data)

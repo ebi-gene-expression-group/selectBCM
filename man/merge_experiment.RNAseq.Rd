@@ -25,8 +25,9 @@ merge_experiment.SummarizedExperiment(
 Single SummarizedExperiment
 }
 \description{
-The function merge_experiments merges all the experiments in the list in a single experiment object and doesn't perform any correction. This function has two additional arguments log and filter (set to TRUE by default).
-It is recommended to give microarray data only with back-ground correction and after filtering low-expressed genes
+The function merge_experiments merges all the experiments in the
+list in a single experiment object and doesn't perform any correction.
+This function has two additional arguments log and filter (set to TRUE by default).
 }
 \note{
 Caution: Sometime during merging experiments, phenodata (SDRF) file gets corrupted, it is advised to always check meta-data before proceeding further.

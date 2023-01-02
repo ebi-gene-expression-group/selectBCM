@@ -1,7 +1,9 @@
 #' Rough merger of RNAseq experiments
 #' @name merge_experiment.RNAseq
-#' @description  The function merge_experiments merges all the experiments in the list in a single experiment object and doesn't perform any correction. This function has two additional arguments log and filter (set to TRUE by default).
-#' It is recommended to give microarray data only with back-ground correction and after filtering low-expressed genes
+#' @description  The function merge_experiments merges all the experiments in the
+#' list in a single experiment object and doesn't perform any correction.
+#' This function has two additional arguments log and filter (set to TRUE by default).
+
 #' @param  experiments A list of wrapped experiments.
 #' @param  filter.unexpressed.genes A logical indicating if the genes that are unexpressed across all the samples of a batch shall be removed. This is for the proper functioning of the current version of ComBat in correct_batch_effect.
 #' @param log A logical ndicating of whether the data shall be log-transformed(recommended).

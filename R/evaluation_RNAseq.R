@@ -1,6 +1,6 @@
 #' Assessment of batch-correction methods for bulk RNAseq experiments
 #' @description  The function performs various evaluations on batch-corrected data and output
-#' performance list of each individual method. Since there are no. of ways batch-correction can
+#' performance list of each individual method. Since there are number of ways batch-correction can
 #' be evaluated and each method has its own limitation, we have used a cocktail of methods to
 #' perform analysis.
 #' @param  result A list of wrapped batch-corrected experiments obtained from the last step ('batch_correction').
@@ -13,8 +13,6 @@
 #' depending on gene label for the given dataset.
 #' @examples  batch_evaluation(result, batch.factors=c("batch","sex"),experiments,'ensembl_gene_id')
 #' @return A list of the evaluation methods on the batch-corrected experiment.
-#' @note Caution: If phenodata(SDRF) file doesn't contain sex/Gender/Sex/gender column, than gender-specific
-#' analysis will be skipped.
 
 #' @import lme4
 #' @import statmod
@@ -33,7 +31,7 @@
 #' @include batch_sil.R
 
 #' @name batch_evaluation.RNAseq
-data(sex.genes, envir=environment())
+
 
 #' @export
 batch_evaluation.RNAseq <-function(result, batch.factors, experiment,N1,N2,filter)
@@ -72,8 +70,6 @@ batch_evaluation.RNAseq <-function(result, batch.factors, experiment,N1,N2,filte
     BatchEntropy(pca.data(filename)$x[,1:2],
                  as.numeric(experiment[["batch"]]),L=100, M=N1, k=N2)} ## Default values for Entropy calculation
 
-  sex.silhouette <- function(filename) {
-    experiment.silhouette <- batch_sil(pca.data(filename), as.factor(experiment[["sex"]]))}
 
   expression.input <- if(experiment@class =="SummarizedExperiment") {
     map(result,  seq.data)

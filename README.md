@@ -17,11 +17,15 @@ SelectBCM analyses include step such as:
 * Evaluation of batch correction methods
 
 
-These steps may be implemented in a variety of ways including stand-alone tools, scripts or R package functions. To compare equivalent logical steps between workflows, and to ‘mix and match’ those components for optimal workflows is, therefore a challenging exercise without having additional infrastructure. The current R package provides a flexibility to perform batch correction and evaluation of various batch-correction methods for given dataset. Finally, it provide **performance rank** of each BECAs for the given dataset.
+These steps may be implemented in a variety of ways including stand-alone tools, scripts or R package functions. To compare equivalent logical steps between workflows, and to ‘mix and match’ those components for optimal workflows is, therefore a challenging exercise without having additional infrastructure. The current R package provides a flexibility to perform batch correction and evaluation of various batch-correction methods for given dataset. Finally, it provide **performance rank** of each BCMs for the given dataset.
 
 
 # Installation
 
+This repository provides a Docker file to intall SelectBCM R package inside a Docker container.
+Additinally, we also provide container image of the SelectBCM for direct installation. 
+
+For traditional approach, we provide renv.lock for the required package installation and later SelectBCM can be installed via github-
 
 ##If you want to install the package directly from Github, I recommend using the `devtools` ##package. Package uses r-base=3.6.3, therefore it is advised to initiate conda environment ##with r-base=3.6.3. Wrapper uses "foreign"  package as dependency which is no more ##supported by cran, therefore it should be installed via conda before hand. 
 
@@ -31,11 +35,11 @@ These steps may be implemented in a variety of ways including stand-alone tools,
 ```
 ```R
 
-##  install_github('https://github.com/ebi-gene-expression-group/selectBCM')
+ install_github('https://github.com/ebi-gene-expression-group/selectBCM')
 ```
 
-##  Manually
 
+or 
 ##Please download the package as `zip` archive and install it via
 
 ```R
