@@ -318,8 +318,8 @@ bcm_ranking(final)
 ``` 
 ![Diagnostic plot.](/data/Ranking_plot.png)
 
-# Accessory function
-## Detetction of batch-effects in raw merged dataset
+
+## Additional function: Detetction of batch-effects in raw merged dataset
 This is an accessory function which performs a subset of evaluation tests of `batch_evaluation` function and provides estimates whether the merged dataset obtained after 'merge_experiments' requires batch correction or not. Higher value of pvca.batch, silhouette, pcRegression and entropy is a direct indicative of batch-effects in raw merged dataset.
 
 This function has following arguments- 
@@ -333,16 +333,15 @@ This function has following arguments-
 
 Assessment of batch-effect on raw merged data can be performed like this:
 ```r
-batch_effect.raw <- detect_effect(experiments,experiment = experiments, batch.factors=c("batch","Disease"),10,10,'symbol')
-Result <- do.call(rbind, lapply(batch_effect.raw, data.frame))
+batch_effect.raw <- detect_effect(experiments,experiment = experiments,
+                                  batch.factors=c("batch","sex"),5,5,'ensembl_gene_id')
+Result <- do.call(rbind, lapply(batch_effect.raw, as.matrix)) %>% t %>% as.data.frame()
 ``` 
 Result:
 ```r
-> Result
-                   raw
-pvca.batch   0.9994122
-pvca.Disease 0.0000000
-silhouette   0.7406456
-pcRegression 0.9173469
-entropy      0.0000000
+Result
+
+       batch sex silhouette pcRegression Entropy
+raw 0.6578993   0  0.7302323    0.8403614       0
+
 ``` 
