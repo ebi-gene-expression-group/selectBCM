@@ -43,3 +43,6 @@ RUN apt-get -y update && apt-get install -y \
    rm -rf /var/lib/apt/lists/* && \
    rm -rf /tmp/* \
    && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+
+# Default to bash terminal when running docker image
+CMD ["bash"]
