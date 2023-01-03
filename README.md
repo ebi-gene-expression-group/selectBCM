@@ -1,8 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 # SelectBCM tool: Short introduction
 "Madhulika Mishra, Lucas Barck, Pablo Moreno, Guillaume Heger, Yuyao Song, Janet M. Thornton, Irene Papatheodorou"
 
