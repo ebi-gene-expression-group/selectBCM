@@ -25,7 +25,7 @@ These steps may be implemented in a variety of ways including stand-alone tools,
 This repository provides a Docker file to intall SelectBCM R package inside a Docker container.
 Additinally, we also provide container image of the SelectBCM for direct installation. 
 
-For traditional approach, we provide renv.lock for the required package installation and later SelectBCM can be installed via github-
+For traditional approach, we provide `renv.lock` for the required package installation and later SelectBCM can be installed via github-
 
 ```R
 
@@ -36,7 +36,7 @@ or
 User can download the package as `zip` archive and install it via
 
 ```R
-install.packages('SelectBCM.zip', repos = NULL, type = 'source')
+install.packages('selectBCM-master.zip', repos = NULL, type = 'source')
 ```
 # Overview of steps available in SelectBCM
 SelectBCM package has several steps ranging from meta-experiment creation to batch-effect evaluation step. In the current wrapper, scripts are written in a user-friendly way. Short description of each step and example is given below -
