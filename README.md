@@ -1,5 +1,10 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # SelectBCM tool: Short introduction
-"Madhulika Mishra, Lucas Barck, Pablo Moreno, Guillaume Heger,Yuyao Song, Janet M. Thornton, Irene Papatheodorou"
+"Madhulika Mishra, Lucas Barck, Pablo Moreno, Guillaume Heger, Yuyao Song, Janet M. Thornton, Irene Papatheodorou"
 
 
 # Introduction
@@ -22,7 +27,7 @@ These steps may be implemented in a variety of ways including stand-alone tools,
 
 # Installation
 
-This repository provides a Docker file to intall SelectBCM R package inside a Docker container.
+This repository provides a `Dockerfile` to intall SelectBCM R package inside a Docker container.
 Additinally, we also provide container image of the SelectBCM for direct installation. 
 
 For traditional approach, we provide `renv.lock` for the required package installation and later SelectBCM can be installed via github-
