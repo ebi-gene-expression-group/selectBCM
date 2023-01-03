@@ -25,7 +25,7 @@ These steps may be implemented in a variety of ways including stand-alone tools,
 This repository provides a Docker file to intall SelectBCM R package inside a Docker container.
 Additinally, we also provide container image of the SelectBCM for direct installation. 
 
-For traditional approach, we provide renv.lock for the required package installation and later SelectBCM can be installed via github-
+For traditional approach, we provide `renv.lock` for the required package installation and later SelectBCM can be installed via github-
 
 ```R
 
