@@ -36,7 +36,7 @@ or
 User can download the package as `zip` archive and install it via
 
 ```R
-install.packages('SelectBCM.zip', repos = NULL, type = 'source')
+install.packages('selectBCM-master.zip', repos = NULL, type = 'source')
 ```
 # Overview of steps available in SelectBCM
 SelectBCM package has several steps ranging from meta-experiment creation to batch-effect evaluation step. In the current wrapper, scripts are written in a user-friendly way. Short description of each step and example is given below -
