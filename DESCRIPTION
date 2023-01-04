@@ -7,13 +7,14 @@ Maintainer: The package maintainer <madhulika@ebi.ac.uk>
 Description: R package for batch evaluation and correction in gene-expression datasets
 License: GPL-3
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
 biocViews: 
 Imports: 
     Biobase,
+    ggpubr,
     stringr,
     purrr,
     ggplot2,
