@@ -22,8 +22,30 @@ These steps may be implemented in a variety of ways including stand-alone tools,
 
 # Installation
 
-This repository provides a `Dockerfile` to intall SelectBCM R package inside a Docker container.
-Additinally, we also provide container image of the SelectBCM for direct installation. 
+It is advised to set up a dedicated conda environment for a new SelectBCM project. To use SelectBCM with conda, run the following commands from a bash shell:
+
+```
+conda env create -n selectBCM -c r r-base=4.2.2
+conda activate selectBCM
+conda install -c conda-forge r-remotes
+conda install -c conda-forge r-cairo
+R
+```
+
+In the R session, run the following installation commands:
+
+```R
+remotes::install_github("tengfei-emory/scBatch", ref="master")
+remotes::install_github("ebi-gene-expression-group/selectBCM", ref="master", build=FALSE)
+
+```
+
+Alternatively, we also made Docker images to run SelectBCM R package inside a Docker container, on either linux/amd64 or linux/arm64 platforms. We also provide the Docker file of the SelectBCM Docker images for custom container building from scratch.
+
+linux/amd64: 
+
+linux/arm64:
+ 
 
 For traditional approach, we provide `renv.lock` for the required package installation and later SelectBCM can be installed via github-
 
