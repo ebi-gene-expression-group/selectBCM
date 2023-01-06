@@ -28,7 +28,6 @@ It is advised to set up a dedicated conda environment for a new SelectBCM projec
 conda env create -n selectBCM -c r r-base=4.2.2
 conda activate selectBCM
 conda install -c conda-forge r-remotes
-conda install -c conda-forge r-cairo
 R
 ```
 
@@ -40,14 +39,25 @@ remotes::install_github("ebi-gene-expression-group/selectBCM", ref="master", bui
 
 ```
 
-Alternatively, we also made Docker images to run SelectBCM R package inside a Docker container, on either linux/amd64 or linux/arm64 platforms. We also provide the Docker file of the SelectBCM Docker images for custom container building from scratch.
+Alternatively, we also created Docker images to run SelectBCM R package inside a Docker container on either linux/amd64 or linux/arm64 platforms. We also provide the Docker file of the SelectBCM Docker images for custom container building from scratch.
 
 linux/amd64: 
 
-linux/arm64:
- 
+On a Linux system, pull container from Docker:
+```
+docker pull yysong123/selectbcm:amd64
+```
 
-For traditional approach, we provide `renv.lock` for the required package installation and later SelectBCM can be installed via github-
+linux/arm64:
+
+On a MacBook with M1 chip, pull container from Docker:
+```
+docker pull yysong123/selectbcm:arm64
+```
+Run by following command, this will open a R session (not saving the R image):
+docker run -it yysong123/selectbcm:amd64 R --no-save 
+ 
+For traditional approach of version control, we provide `renv.lock` for the required package installation and later SelectBCM can be installed via github-
 
 ```R
 
