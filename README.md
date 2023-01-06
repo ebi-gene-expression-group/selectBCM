@@ -143,7 +143,6 @@ experiments %<>% remove_isolated_experiments('sex')
 
 The two following plots are displayed by the function. The first one shows the graph of intersections of all the experiments before the removal of isolated ones. The second shows the same graph after their removal (Figure2).
 
-#### Missing figure 1 here ####
 
 ![Figure2. Graph showing connected set of experiments.](/data/Merge_experiment.png)
 
