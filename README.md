@@ -3,13 +3,13 @@
 
 
 # Introduction
-Integrating information from bulk transcriptomes from different experiments can potentially increase the impact of individual studies in areas such as biomedicine. However, it remains a challenge, even though they are essential data sources for basic and disease biology. Batch-effect corrections for both experimental and technological variations in transcriptomes are one of the main challenges in this domain. To handle this, various batch-correction methods(BCMs) have been developed in recent times. However, the need for a user-friendly workflow to select the most appropriate BCM for the given set of experiments hinders the application of batch correction at a large scale, such as required for performing multi-cohort transcriptomic analysis. In the current project, we developed an R tool named “SelectBCM Tool”  to increase the reusability and reproducibility of these BCMs in order- to facilitate batch correction, comparison and selection of BCMs to solve the problem of choosing the most suitable batch correction method for a set of bulk transcriptomic experiments. 
+Integrating information from bulk transcriptomes from different experiments can potentially increase the impact of individual studies in areas such as biomedicine. Despite that essential data sources for basic and disease biology are available, adequate integration remains difficult. Batch-effect correction for both experimental and technological variations is one of the main challenges in transcriptomics studies. To handle this, various batch-correction methods(BCMs) have been developed in recent times. However, the lack of a user-friendly workflow to select the most appropriate BCM for the given set of experiments needs to be resolved for applying batch correction at a large scale e.g. for multi-cohort transcriptomic analysis. In this project, we developed an R tool named “SelectBCM Tool”  to increase the reusability and reproducibility of these BCMs, in order to facilitate the  application, comparison and selection of BCMs. Our tools aims to aid choosing the most suitable batch correction method for a set of bulk transcriptomic experiments. 
 
 
 # Project overview
-SelectBCM analyses include step such as:
+SelectBCM performes the following analysis:
 
-* Fetching experiments from ExpressionAtlas based on a biological factor of interest, such as disease, species and tissue
+* Fetching experiments from [ExpressionAtlas](https://www.ebi.ac.uk/gxa/home) based on a biological factor of interest, such as disease, species and tissue
 * Removing isolated experiments
 * Merging experiments in a single dataset
 * detetction of batch effect in the merged dataset
@@ -17,30 +17,61 @@ SelectBCM analyses include step such as:
 * Evaluation of batch correction methods
 
 
-These steps may be implemented in a variety of ways including stand-alone tools, scripts or R package functions. To compare equivalent logical steps between workflows, and to ‘mix and match’ those components for optimal workflows is, therefore a challenging exercise without having additional infrastructure. The current R package provides a flexibility to perform batch correction and evaluation of various batch-correction methods for given dataset. Finally, it provide **performance rank** of each BCMs for the given dataset.
+The above steps have been implemented in a variety of forms including stand-alone tools, scripts or R package functions. By creating SelectBCM we aim to provide the infrastructure to compare equivalent logical steps between workflows, and to ‘mix and match’ those components for a custom optimal workflow. The current R package provides a flexibility to perform batch correction and evaluation of various batch-correction methods for given dataset. Finally, it provide **performance rank** of each BCMs for the given dataset.
 
 
 # Installation
 
-This repository provides a `Dockerfile` to intall SelectBCM R package inside a Docker container.
-Additinally, we also provide container image of the SelectBCM for direct installation. 
+It is advised to set up a dedicated [conda](https://docs.conda.io/en/latest/) environment for a new SelectBCM project. To use SelectBCM with conda, run the following commands from a bash shell:
 
-For traditional approach, we provide `renv.lock` for the required package installation and later SelectBCM can be installed via github-
+```
+conda env create -n selectBCM -c r r-base=4.2.2
+conda activate selectBCM
+conda install -c conda-forge r-remotes
+R
+```
+
+In the R session, run the following installation commands:
+
+```R
+remotes::install_github("tengfei-emory/scBatch", ref="master")
+remotes::install_github("ebi-gene-expression-group/selectBCM", ref="master", build=FALSE)
+
+```
+
+Alternatively, we also created Docker images to run SelectBCM R package inside a [Docker](https://www.docker.com/) container on either linux/amd64 or linux/arm64 platforms. We also provide the Docker file of the SelectBCM Docker images for custom container building from scratch.
+
+linux/amd64: 
+
+Pull container from Docker and open an interactive R session:
+```
+docker pull yysong123/selectbcm:amd64
+docker run -it yysong123/selectbcm:amd64
+```
+
+linux/arm64:
+```
+docker pull yysong123/selectbcm:arm64
+docker run -it yysong123/selectbcm:arm64
+```
+ 
+For a [renv](https://rstudio.github.io/renv/articles/renv.html) approach of version control, we provide `renv.lock` for the package dependencies. Install the specific package versions as recorded in `renv.lock` using `renv::restore()` at the local package directory. 
+
+SelectBCM can be installed via github-
 
 ```R
 
 install_github('https://github.com/ebi-gene-expression-group/selectBCM')
 ```
 
-or 
-User can download the package as `zip` archive and install it via
+Or download the package as `zip` archive and install-
 
 ```R
 install.packages('selectBCM-master.zip', repos = NULL, type = 'source')
 ```
+
 # Overview of steps available in SelectBCM
 SelectBCM package has several steps ranging from meta-experiment creation to batch-effect evaluation step. In the current wrapper, scripts are written in a user-friendly way. Short description of each step and example is given below -
-
 
 
 ## loading library
@@ -67,7 +98,7 @@ library(ggpubr)
 ## Step1: Getting data
 
 **Loading local data in R:**
-If the data files are already on user's local machine, then the data can be directly used-
+If the data files are already on the user's local machine, they can be used directly as follows:
 
 **Steps:**
 
@@ -80,7 +111,7 @@ experiments<-load_experiments('./')
 
 ```
 
-If user want to download data from Expression Atlas, they can skip this part and go directly to "Downloading data from Expression Atlas".
+If user want to download data from Expression Atlas, they can skip the above and go directly to "Downloading data from Expression Atlas".
 
 **Downloading data from Expression Atlas:**
 In case of data downloading from Expression Atlas, user can use the function `download_experiments_from_ExpressionAtlas` in this way :
@@ -108,9 +139,10 @@ To correct the `batch effect`, one needs to take the biological characteristics 
 experiments %<>% remove_isolated_experiments('sex')
 ```
 
-**WARNING:** this function only removes the isolated experiment. Although it is still possible that two or more unconnected groups of experiments remain, within which the experiments are connected. In this case, batch effect correction is not possible and one will have to choose a group of experiments manually.
+**WARNING:** this function only removes the isolated experiment according to the supplied key. Although it is still possible that two or more unconnected groups of experiments remain, within which the experiments are connected. In this case, batch effect correction is not possible and one will have to choose a group of experiments manually.
 
 The two following plots are displayed by the function. The first one shows the graph of intersections of all the experiments before the removal of isolated ones. The second shows the same graph after their removal (Figure2).
+
 
 ![Figure2. Graph showing connected set of experiments.](/data/Merge_experiment.png)
 
@@ -170,7 +202,7 @@ This function has following arguments-
 * The `filter` argument specifies the gene label for the given dataset. It Should be one of the following string- 'symbol', 'ensembl_gene_id' or 'entrezgene_id' depending on the gene label for the given dataset.
 
 
-`batch effect` present in the example study can be detected like this:
+`batch effect` present in the example study can be detected as follows:
 ```r
 
 dds_final <- DESeqDataSetFromMatrix(countData = assay(experiments  ),
@@ -245,7 +277,7 @@ This function has following arguments-
 * The `filter` argument specifies the gene label for the given dataset. It Should be one of following string- 'symbol', 'ensembl_gene_id' or 'entrezgene_id' depending on the gene label for the given dataset.
 
 
-Assessment of batch-corrected data can be performed like this:
+Assessment of batch-corrected data can be performed as follows:
 ```r
 assess.RNAseq <- batch_evaluation.RNAseq(result.1, batch.factors=c("batch","sex"),
                                          se,5,5,'ensembl_gene_id')
@@ -256,14 +288,14 @@ assess.RNAseq <- batch_evaluation.RNAseq(result.1, batch.factors=c("batch","sex"
 
 ## Step6: Ranking of BCMs
 
-Once, assessment is performed, in next step, results obtained from the `batch_evaluation` step, ranking of BCM is the two step analysis-
+Once assessment is performed, in next step, results obtained from the `batch_evaluation` step, ranking of BCM is the two step analysis-
 
 * Generation of Diagnostic matrix
 * Plot of Ranks of BCM obatined from Diagnostic matrix
 
 **Diagnostic matrix**
 
-`diagnostic_matrix.RNAseq` function performs ranking of evaluation data obtained at the previous step. Here, methods are ranked on their performance and finally `sumRank` is the final Rank of each method for the given input dataset. Rank 1 will be the best performer method.
+`diagnostic_matrix.RNAseq` function performs ranking of evaluation data obtained at the previous step. Here, methods are ranked based on their performance and finally `sumRank` is the final Rank of each method for the given input dataset. Rank 1 will be the best performer method.
 
 * For RNAseq experiments: users have to call `diagnostic_matrix.RNAseq` function.
 * For microarray experiment: users have to call `diagnostic_matrix.microarray` function.
@@ -319,7 +351,7 @@ bcm_ranking(final)
 
 
 ## Additional function: Detetction of batch-effects in raw merged dataset
-This is an accessory function which performs a subset of evaluation tests of `batch_evaluation` function and provides estimates whether the merged dataset obtained after 'merge_experiments' requires batch correction or not. Higher value of pvca.batch, silhouette, pcRegression and entropy is a direct indicative of batch-effects in raw merged dataset.
+`detect_effect` performs a subset of evaluation tests of `batch_evaluation` function and provides estimates whether the merged dataset obtained after 'merge_experiments' requires batch correction or not. Higher value of pvca.batch, silhouette, pcRegression and entropy is a direct indicative of batch-effects in raw merged dataset.
 
 This function has following arguments- 
 
