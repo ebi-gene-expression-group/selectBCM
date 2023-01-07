@@ -8,7 +8,6 @@
 
 #' @name bcm_ranking
 
-#' @export
 
 #' @export
 bcm_ranking <- function(rank_data){

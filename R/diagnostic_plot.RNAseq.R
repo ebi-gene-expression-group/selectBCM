@@ -20,7 +20,6 @@
 #' @importFrom hrbrthemes theme_ipsum
 
 #' @export
-
 diagnostic_plot.RNAseq <-function(diagnostic_matirx)
 {
 
